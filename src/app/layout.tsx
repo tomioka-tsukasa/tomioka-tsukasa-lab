@@ -4,7 +4,6 @@ import '@/styles/global/globals'
 import '@/styles/global.css'
 import StoreProvider from '@/store/provider'
 import { GsapManager } from '@/components/GsapManager/GsapManager'
-import { LoadingScreen } from '@/components/LoadingScreen/LoadingScreen'
 
 const zenOldMincho = Zen_Old_Mincho({
   variable: '--font-zen-old-mincho',
@@ -48,7 +47,6 @@ export default function RootLayout({
       <GsapManager />
       <html lang='ja'>
         <body className={`${zenOldMincho.variable}`}>
-          <LoadingScreen />
           {children}
         </body>
       </html>
