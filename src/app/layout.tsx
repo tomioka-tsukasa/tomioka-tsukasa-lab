@@ -4,7 +4,7 @@ import '@/styles/global/globals'
 import '@/styles/global.css'
 import StoreProvider from '@/store/provider'
 import { GsapManager } from '@/components/GsapManager/GsapManager'
-import Canvas from '@/components/Canvas/Canvas'
+import Canvas from '@/components/Canvas/CanvasWrapper'
 import { LoadingScreen } from '@/components/LoadingScreen/LoadingScreen'
 import * as styles from './layout.css'
 
