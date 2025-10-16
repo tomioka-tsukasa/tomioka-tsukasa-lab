@@ -4,7 +4,6 @@ export const canvasContainer = style({
   width: '100vw',
   height: '100vh',
   display: 'flex',
-  pointerEvents: 'none',
   position: 'fixed',
   zIndex: 0,
   top: 0,

@@ -184,8 +184,8 @@ const initWebGL: InitWebGL = (
   /**
    * アニメーション
    */
-  let prevTime = performance.now()
-  const targetFPS = 60
+  // let prevTime = performance.now()
+  // const targetFPS = 60
 
   const renderProcess = () => {
     if (setupMember.postprocess.active) {
@@ -213,11 +213,10 @@ const initWebGL: InitWebGL = (
      * パフォーマンス管理
      */
     stats.begin()
-    const currentTime = performance.now()
-    const delta = (currentTime - prevTime) / 1000 // 秒単位
-    const deltaFPS = delta * targetFPS
-    prevTime = currentTime
-    console.log(deltaFPS)
+    // const currentTime = performance.now()
+    // const delta = (currentTime - prevTime) / 1000 // 秒単位
+    // const deltaFPS = delta * targetFPS
+    // prevTime = currentTime
 
     /**
      * アップデート関数
