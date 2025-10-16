@@ -13,16 +13,8 @@ const nextConfig: NextConfig = {
   },
   webpack: (config) => {
     config.module.rules.push({
-      test: /\.glsl$/,
+      test: /\.(glsl|vs|fs|vert|frag)$/i,
       use: 'raw-loader',
-    })
-    config.module.rules.push({
-      test: /\.(glsl|vs|fs|vert|frag)$/i, // GLSL ファイルの拡張子
-      use: [
-        {
-          loader: 'glslify-loader',
-        },
-      ],
     })
     config.module.rules.push({
       test: /\.(woff|woff2|eot|ttf|otf)$/i,

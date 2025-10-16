@@ -9,6 +9,7 @@ import { CreateWebGL, InitWebGL } from '@/modules/webgl/webglTypes'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
+import { GlitchPass } from '@/modules/webgl/postprocessing/glitch/GlitchPass'
 
 // パフォーマンス
 import Stats from 'stats.js'
@@ -165,6 +166,17 @@ const initWebGL: InitWebGL = (
     setupMember.postprocess.bloomPass.threshold, // ブルームの強さ
   )
   composer.addPass(bloomPass)
+
+  // グリッチパス
+  const glitchPass = new GlitchPass({
+    strength: setupMember.postprocess.glitchPass.strength,
+    speed: setupMember.postprocess.glitchPass.speed,
+    rgbOffset: setupMember.postprocess.glitchPass.rgbOffset,
+    scanlines: setupMember.postprocess.glitchPass.scanlines,
+  })
+  if (setupMember.postprocess.glitchPass.active) {
+    composer.addPass(glitchPass)
+  }
 
   // GUI設定
   if (setupMember.gui.active) setPostprocessGUI(

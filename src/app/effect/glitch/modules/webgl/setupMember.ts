@@ -58,6 +58,13 @@ export const setupMember = {
       radius: 0.1,
       threshold: 0.85,
     },
+    glitchPass: {
+      active: true,
+      strength: 0.1,
+      speed: 1.0,
+      rgbOffset: 0.005,
+      scanlines: 100,
+    },
   },
 }
 
