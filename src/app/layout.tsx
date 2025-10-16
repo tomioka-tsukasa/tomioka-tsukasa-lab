@@ -4,9 +4,7 @@ import '@/styles/global/globals'
 import '@/styles/global.css'
 import StoreProvider from '@/store/provider'
 import { GsapManager } from '@/components/GsapManager/GsapManager'
-import Canvas from '@/components/Canvas/CanvasWrapper'
 import { LoadingScreen } from '@/components/LoadingScreen/LoadingScreen'
-import * as styles from './layout.css'
 
 const zenOldMincho = Zen_Old_Mincho({
   variable: '--font-zen-old-mincho',
@@ -50,11 +48,6 @@ export default function RootLayout({
       <GsapManager />
       <html lang='ja'>
         <body className={`${zenOldMincho.variable}`}>
-          <div className={styles.canvasContainer}>
-            <div className={styles.canvasInner}>
-              <Canvas />
-            </div>
-          </div>
           <LoadingScreen />
           {children}
         </body>
