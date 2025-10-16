@@ -1,0 +1,17 @@
+{
+  "set ves": {
+    "prefix": "set-ves",
+    "body": ["import { ves } from '@/styles/modules/ves'\n\nexport const $1 = ves({\n  $2\n})"],
+    "description": "カスタムの vanilla-extract style メソッド展開",
+  },
+  "style mq": {
+    "prefix": "style-mq",
+    "body": ["'mq': [\n  [\n    'pc',\n    {}\n  ],\n  [\n    'sp',\n    {}\n  ],\n  [\n    'tablet',\n    {}\n  ]\n],"],
+    "description": "メディアクエリ設定",
+  },
+  "style rvw": {
+    "prefix": "style-rvw",
+    "body": ["'rvw': {\n  $1: {\n    value: 0,\n    sp: 0,\n    tablet: 0,\n  },\n},"],
+    "description": "responsive vw設定",
+  },
+}

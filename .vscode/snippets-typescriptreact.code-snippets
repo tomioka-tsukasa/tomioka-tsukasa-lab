@@ -1,0 +1,17 @@
+{
+  "set page": {
+    "prefix": "set-page",
+    "body": ["interface Props {\n  a?: unknown\n}\n\nexport default function $1({}: Props) {\n  return <>\n    <div className={`${styles.root}`}></div>\n  </>\n}\n"],
+    "description": "ページ宣言",
+  },
+  "set component": {
+    "prefix": "set-component",
+    "body": ["import { styles } from './index.css'\n\ninterface Props {\n  a?: unknown\n}\n\nexport const $1 = ({}: Props) => {\n  return <>\n    <div className={`${styles.root}`}></div>\n  </>\n}\n"],
+    "description": "コンポーネントのルート宣言",
+  },
+  "set class": {
+    "prefix": "set-class",
+    "body": ["className={`${styles.$1}`}"],
+    "description": "class設定",
+  },
+}
