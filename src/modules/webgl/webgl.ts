@@ -130,14 +130,7 @@ const initWebGL: InitWebGL = (
    */
   const mesh = (() => {
     const geo = new THREE.SphereGeometry(10, 32, 32)
-    const mat = new THREE.ShaderMaterial({
-      uniforms : {
-        viewVector: { value: new THREE.Vector3(0, 0, 20)},//initial camera.position
-        uColor: { value: new THREE.Color(0x42a9f1)},// GrowColor
-      },
-      blending: THREE.CustomBlending,
-      transparent:true,
-    })
+    const mat = new THREE.MeshNormalMaterial()
 
     const mesh = new THREE.Mesh(geo, mat)
 
