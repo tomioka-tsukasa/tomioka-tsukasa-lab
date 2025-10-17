@@ -1,9 +1,9 @@
 export const cameraWork = {
   default: {
     position: {
-      x: 10,
-      y: 30,
-      z: 30,
+      x: 0,
+      y: 9,
+      z: 20,
       mobile: {
         x: 0,
         y: 60,
@@ -12,7 +12,7 @@ export const cameraWork = {
     },
     target: {
       x: 0,
-      y: 0,
+      y: 9,
       z: 0,
       mobile: {
         x: 0,

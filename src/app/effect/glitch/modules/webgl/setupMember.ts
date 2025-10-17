@@ -59,7 +59,7 @@ export const setupMember = {
       threshold: 0.85,
     },
     glitchPass: {
-      active: true,
+      active: false,
       strength: 0.1,
       speed: 1.0,
       rgbOffset: 0.005,

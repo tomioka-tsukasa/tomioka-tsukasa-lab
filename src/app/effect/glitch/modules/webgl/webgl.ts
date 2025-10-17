@@ -130,10 +130,37 @@ const initWebGL: InitWebGL = (
    * メッシュ設定
    */
   const mesh = (() => {
-    const geo = new THREE.SphereGeometry(10, 32, 32)
-    const mat = new THREE.MeshNormalMaterial()
+    const geo = new THREE.PlaneGeometry(20, 20, 1, 1)
+    const mat = new THREE.ShaderMaterial({
+      vertexShader: `
+      uniform float u_time;
+      varying vec2 vUv;
+      varying vec2 vPosition;
+
+      void main() {
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        vUv = uv;
+        vPosition = vec2(position.x, position.y);
+      }
+      `,
+      fragmentShader: `
+      varying vec2 vUv;
+      uniform float u_time;
+      varying vec2 vPosition;
+
+      void main() {
+        gl_FragColor = vec4(abs( sin(vUv + u_time) ), 1., 1.);
+      }
+      `,
+      uniforms: {
+        u_time: { value: 0 },
+      },
+      wireframe: false,
+    })
 
     const mesh = new THREE.Mesh(geo, mat)
+
+    console.log(mesh)
 
     return mesh
   })()
@@ -165,7 +192,9 @@ const initWebGL: InitWebGL = (
     setupMember.postprocess.bloomPass.radius, // ブルームの半径
     setupMember.postprocess.bloomPass.threshold, // ブルームの強さ
   )
-  composer.addPass(bloomPass)
+  if (setupMember.postprocess.bloomPass.active) {
+    composer.addPass(bloomPass)
+  }
 
   // グリッチパス
   const glitchPass = new GlitchPass({
@@ -222,6 +251,11 @@ const initWebGL: InitWebGL = (
     // const delta = (currentTime - prevTime) / 1000 // 秒単位
     // const deltaFPS = delta * targetFPS
     // prevTime = currentTime
+
+    /**
+     * サンプルメッシュのuniformsを更新
+     */
+    mesh.material.uniforms.u_time.value += 0.01
 
     /**
      * アップデート関数
