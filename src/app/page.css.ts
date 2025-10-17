@@ -11,5 +11,5 @@ export const heading = style([
 ])
 
 export const section = style([
-  rvw.paddingBottom(160),
+  rvw.paddingBottom(96),
 ])

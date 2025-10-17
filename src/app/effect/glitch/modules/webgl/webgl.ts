@@ -148,14 +148,22 @@ const initWebGL: InitWebGL = (
       uniform float u_time;
       varying vec2 vPosition;
 
+      float random(float x) {
+        return fract(sin(x * 12.9898) * 43758.5453);
+      }
+      
       void main() {
-        gl_FragColor = vec4(abs( sin(vUv + u_time) ), 1., 1.);
+        float gridSize = 10.0;
+        float discreteX = floor((vUv.x + vUv.y) * gridSize) / gridSize;
+        float randomValue = random(discreteX);
+        gl_FragColor = vec4(vec3(randomValue), 1.0);
       }
       `,
       uniforms: {
         u_time: { value: 0 },
       },
       wireframe: false,
+      side: THREE.DoubleSide,
     })
 
     const mesh = new THREE.Mesh(geo, mat)
