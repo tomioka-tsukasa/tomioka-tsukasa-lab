@@ -166,6 +166,14 @@ export const loadingTextures: Array<LoadingObject> = [
     name: 'Poliigon_PlasterPainted_7664_BaseColor',
     path: '/assets/textures/Poliigon_PlasterPainted_7664_BaseColor.jpg',
   },
+  {
+    name: 'sample-01',
+    path: '/assets/images/samples/effect-glitch-sample-01.jpg',
+  },
+  {
+    name: 'sample-02',
+    path: '/assets/images/samples/effect-glitch-sample-02.jpg',
+  },
 ]
 
 /**

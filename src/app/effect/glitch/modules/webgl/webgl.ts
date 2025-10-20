@@ -5,6 +5,9 @@ import { getCamera, getControls, getRenderer, getCameraInfo } from '@/modules/we
 import { loadingAssets, setupMember, webglCtrl } from './setupMember'
 import { CreateWebGL, InitWebGL } from '@/modules/webgl/webglTypes'
 
+// メッシュ
+import { imageChangerNoise } from './mesh/imageChangerNoise/imageChangerNoise'
+
 // ポストプロセッシング
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
@@ -129,50 +132,83 @@ const initWebGL: InitWebGL = (
   /**
    * メッシュ設定
    */
-  const mesh = (() => {
-    const geo = new THREE.PlaneGeometry(20, 20, 1, 1)
-    const mat = new THREE.ShaderMaterial({
-      vertexShader: `
-      uniform float u_time;
-      varying vec2 vUv;
-      varying vec2 vPosition;
+  // const mesh = (() => {
+  //   const geo = new THREE.PlaneGeometry(20, 20, 1, 1)
 
-      void main() {
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        vUv = uv;
-        vPosition = vec2(position.x, position.y);
-      }
-      `,
-      fragmentShader: `
-      varying vec2 vUv;
-      uniform float u_time;
-      varying vec2 vPosition;
+  //   const mat = new THREE.ShaderMaterial({
+  //     vertexShader: `
+  //     uniform float u_time;
+  //     varying vec2 vUv;
+  //     varying vec2 vPosition;
 
-      float random(float x) {
-        return fract(sin(x * 12.9898) * 43758.5453);
-      }
-      
-      void main() {
-        float gridSize = 10.0;
-        float discreteX = floor((vUv.x + vUv.y) * gridSize) / gridSize;
-        float randomValue = random(discreteX);
-        gl_FragColor = vec4(vec3(randomValue), 1.0);
-      }
-      `,
-      uniforms: {
-        u_time: { value: 0 },
-      },
-      wireframe: false,
-      side: THREE.DoubleSide,
-    })
+  //     void main() {
+  //       gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  //       vUv = uv;
+  //       vPosition = vec2(position.x, position.y);
+  //     }
+  //     `,
+  //     fragmentShader: `
+  //     varying vec2 vUv;
+  //     uniform float u_time;
+  //     uniform sampler2D u_texture_01;
+  //     uniform sampler2D u_texture_02;
+  //     varying vec2 vPosition;
 
-    const mesh = new THREE.Mesh(geo, mat)
+  //     float random(float x) {
+  //       return fract(sin(x * 12.9898) * 43758.5453);
+  //     }
 
-    console.log(mesh)
+  //     float random2d(vec2 st) {
+  //       return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
+  //     }
 
-    return mesh
-  })()
-  mesh.position.set(0, 10, 0)
+  //     void main() {
+  //       // ステップ1: 2つのテクスチャをサンプリング
+  //       vec3 texture1 = texture2D(u_texture_01, vUv).rgb;
+  //       vec3 texture2 = texture2D(u_texture_02, vUv).rgb;
+
+  //       // ステップ2: 切り替えパラメータ追加が必要
+  //       // uniform float u_transition; // 0.0 = 1枚目、1.0 = 2枚目
+  //       float transition = sin(u_time * 1.5) * .5 + .5;
+
+  //       // ステップ3: 基本的な切り替え（フェード）
+  //       vec3 simpleTransition = mix(texture1, texture2, transition);
+
+  //       // ステップ4: ランダム切り替えの仕組み
+  //       float pixelRandom = random2d(vUv * 100.0); // ピクセルごとのランダム値
+  //       float threshold = transition; // 切り替えの閾値
+
+  //       // ステップ5: step関数を使って判定
+  //       float mask = step(pixelRandom, threshold);
+  //       vec3 randomTransition = mix(texture1, texture2, mask);
+
+  //       // ステップ6: グリッド単位でランダムにする場合
+  //       // vec2 grid = floor(vUv * 10.0);
+  //       // float gridRandom = random2d(grid);
+  //       // float gridMask = step(gridRandom, threshold);
+
+  //       vec3 color = randomTransition; // 仮の色
+  //       gl_FragColor = vec4(color, 1.0);
+  //     }
+  //     `,
+  //     uniforms: {
+  //       u_time: { value: 0 },
+  //       u_texture_01: { value: loadedAssets.textures['sample-01'] },
+  //       u_texture_02: { value: loadedAssets.textures['sample-02'] },
+  //     },
+  //     wireframe: false,
+  //     side: THREE.DoubleSide,
+  //   })
+
+  //   const mesh = new THREE.Mesh(geo, mat)
+
+  //   console.log(mesh)
+
+  //   return mesh
+  // })()
+  // mesh.position.set(0, 10, 0)
+
+  const mesh = imageChangerNoise(loadedAssets)
 
   /**
    * グリッドヘルパー
