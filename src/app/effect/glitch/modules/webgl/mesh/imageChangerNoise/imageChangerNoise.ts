@@ -35,7 +35,7 @@ export const imageChangerNoise: ImageChangerNoise = (
   /**
    * メッシュ生成
    */
-  const geo = new THREE.PlaneGeometry(20, 20, 1, 1)
+  const geo = new THREE.PlaneGeometry(20, 20, 500, 500)
 
   const mat = new THREE.ShaderMaterial({
     vertexShader,

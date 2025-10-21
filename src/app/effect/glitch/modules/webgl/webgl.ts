@@ -212,20 +212,20 @@ const initWebGL: InitWebGL = (
 
   // ディレイ後にグリッチを発動（テスト用）
   setTimeout(() => {
-    imageChangerNoiseCtrl.triggerGlitch(1.2)
+    imageChangerNoiseCtrl.triggerGlitch(0.5)
   }, 500)
 
   /**
    * グリッドヘルパー
    */
-  const gridHelper = new THREE.GridHelper(100, 100)
+  // const gridHelper = new THREE.GridHelper(100, 100)
 
   /**
    * シーン追加
    */
   scene.add(
     camera,
-    gridHelper,
+    // gridHelper,
     imageChangerNoiseCtrl.mesh,
   )
 

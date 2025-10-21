@@ -41,7 +41,7 @@ export const setupMember = {
   },
   camera: cameraWork,
   controls: {
-    enabled: true,
+    enabled: false,
     autoRotate: false,
     debug: true,
   },
