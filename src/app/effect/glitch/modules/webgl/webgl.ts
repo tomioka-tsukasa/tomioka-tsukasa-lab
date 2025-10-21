@@ -208,7 +208,12 @@ const initWebGL: InitWebGL = (
   // })()
   // mesh.position.set(0, 10, 0)
 
-  const mesh = imageChangerNoise(loadedAssets)
+  const imageChangerNoiseCtrl = imageChangerNoise(loadedAssets)
+
+  // ディレイ後にグリッチを発動（テスト用）
+  setTimeout(() => {
+    imageChangerNoiseCtrl.triggerGlitch(1.2)
+  }, 500)
 
   /**
    * グリッドヘルパー
@@ -221,7 +226,7 @@ const initWebGL: InitWebGL = (
   scene.add(
     camera,
     gridHelper,
-    mesh,
+    imageChangerNoiseCtrl.mesh,
   )
 
   /**
@@ -297,9 +302,9 @@ const initWebGL: InitWebGL = (
     // prevTime = currentTime
 
     /**
-     * サンプルメッシュのuniformsを更新
+     * サンプルメッシュの状態管理
      */
-    mesh.material.uniforms.u_time.value += 0.01
+    imageChangerNoiseCtrl.update()
 
     /**
      * アップデート関数
