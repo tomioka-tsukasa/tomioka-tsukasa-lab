@@ -23,7 +23,7 @@ export const container = style([
       },
     },
   },
-  rvw.padding(24, 16),
+  rvw.padding([72, 16, 24]),
   rvw.gap(24, 18),
 ])
 
@@ -53,11 +53,20 @@ export const containerHidden = style({
   transform: 'translateX(100%)',
 })
 
-export const toggleButton = style([
+export const fixedControls = style([
   {
     position: 'fixed',
     top: '10px',
     right: '10px',
+    zIndex: 102,
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+  rvw.gap(8, 6),
+])
+
+export const toggleButton = style([
+  {
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
     border: '1px solid rgba(0, 0, 0, 0.1)',
     borderRadius: '6px',
@@ -65,7 +74,6 @@ export const toggleButton = style([
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    zIndex: 102,
     transition: 'all 0.2s ease-in-out',
     padding: '9px 24px',
     fontSize: '14px',
@@ -76,4 +84,12 @@ export const toggleButton = style([
       transform: 'scale(1.05)',
     },
   },
+])
+
+export const controlButtons = style([
+  {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  rvw.gap(8, 6),
 ])
