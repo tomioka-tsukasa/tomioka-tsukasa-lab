@@ -75,7 +75,7 @@ const initWebGL: InitWebGL = (
     scene.environmentIntensity = setupMember.scene.environmentIntensity
 
     // シーンのGUI設定
-    setSceneGUI(
+    if (setupMember.gui.active) setSceneGUI(
       scene,
       loadedAssets.envmaps[setupMember.scene.environment],
       {
@@ -110,7 +110,7 @@ const initWebGL: InitWebGL = (
     renderer,
     cameraWork.target,
   )
-  setCameraGUI(camera, cameraWork)
+  if (setupMember.gui.active) setCameraGUI(camera, cameraWork)
 
   // カメラの動きをログに出力
   getCameraInfo(camera, controls)

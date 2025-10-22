@@ -10,7 +10,7 @@ import { GetSpotLight } from '@/modules/webgl/setup/lights/lightsTypes'
  */
 export const setupMember = {
   gui: {
-    active: true,
+    active: false,
     stats: true,
   },
   renderer: {
