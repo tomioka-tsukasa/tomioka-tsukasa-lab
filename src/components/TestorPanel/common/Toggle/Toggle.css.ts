@@ -1,12 +1,11 @@
 import { style } from '@vanilla-extract/css'
-import { rvw } from '@/styles/responsive.css'
 
 export const container = style([
   {
     display: 'flex',
     alignItems: 'center',
+    gap: '8px',
   },
-  rvw.gap(8, 6),
 ])
 
 export const label = style({
@@ -32,9 +31,9 @@ export const track = style([
     display: 'block',
     borderRadius: '9999px',
     transition: 'background-color 0.2s ease-in-out',
+    width: '40px',
+    height: '24px',
   },
-  rvw.width(40, 36),
-  rvw.height(24, 20),
 ])
 
 export const trackActive = style({
@@ -51,22 +50,24 @@ export const dot = style([
     backgroundColor: '#ffffff',
     borderRadius: '50%',
     transition: 'transform 0.2s ease-in-out',
+    width: '16px',
+    height: '16px',
+    top: '4px',
+    left: '4px',
   },
-  rvw.width(16, 14),
-  rvw.height(16, 14),
-  rvw.top(4, 3),
-  rvw.left(4, 3),
 ])
 
 export const dotActive = style([
-  rvw.transform('translateX(16px)', 'translateX(14px)'),
+  {
+    transform: 'translateX(16px)',
+  },
 ])
 
 export const labelText = style([
   {
     fontWeight: '500',
     color: '#374151',
+    fontSize: '14px',
+    marginLeft: '8px',
   },
-  rvw.fontSize(14, 12),
-  rvw.marginLeft(8, 6),
 ])

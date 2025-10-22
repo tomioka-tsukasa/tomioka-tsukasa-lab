@@ -1,5 +1,4 @@
 import { style } from '@vanilla-extract/css'
-import { rvw } from '@/styles/responsive.css'
 
 export const container = style([
   {
@@ -13,29 +12,30 @@ export const container = style([
     transition: 'transform 0.3s ease-in-out',
     display: 'flex',
     flexDirection: 'column',
+    padding: '72px 16px 24px',
+    gap: '24px',
     '@media': {
       '(max-width: 768px)': {
         width: '100%',
         position: 'relative',
-        height: 'auto',
         borderLeft: 'none',
         borderTop: '1px solid rgba(0, 0, 0, 0.1)',
       },
     },
   },
-  rvw.padding([72, 16, 24]),
-  rvw.gap(24, 18),
 ])
 
 export const selectSection = style([
-  rvw.marginBottom(16, 12),
+  {
+    marginBottom: '16px',
+  },
 ])
 
 export const description = style([
   {
     color: '#6b7280',
+    fontSize: '14px',
   },
-  rvw.fontSize(14, 12),
 ])
 
 export const usageList = style([
@@ -44,9 +44,9 @@ export const usageList = style([
     paddingLeft: '1.5rem',
     display: 'flex',
     flexDirection: 'column',
+    gap: '4px',
+    marginLeft: '8px',
   },
-  rvw.gap(4, 3),
-  rvw.marginLeft(8, 6),
 ])
 
 export const containerHidden = style({
@@ -61,8 +61,8 @@ export const fixedControls = style([
     zIndex: 102,
     display: 'flex',
     justifyContent: 'flex-end',
+    gap: '8px',
   },
-  rvw.gap(8, 6),
 ])
 
 export const toggleButton = style([
@@ -90,6 +90,6 @@ export const controlButtons = style([
   {
     display: 'flex',
     flexDirection: 'row',
+    gap: '8px',
   },
-  rvw.gap(8, 6),
 ])

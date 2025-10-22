@@ -8,7 +8,7 @@ export const container = style([
     width: '400px',
     '@media': {
       '(max-width: 768px)': {
-        width: '100%',
+        width: '80vw',
       },
     },
   },

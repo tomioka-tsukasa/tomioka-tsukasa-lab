@@ -1,21 +1,20 @@
 import { style } from '@vanilla-extract/css'
 import { colors } from '@/styles/variables'
-import { rvw } from '@/styles/responsive.css'
 
 export const container = style([
   {
     display: 'flex',
     flexDirection: 'column',
+    gap: '4px',
   },
-  rvw.gap(4, 3),
 ])
 
 export const label = style([
   {
     fontWeight: '500',
     color: '#374151',
+    fontSize: '14px',
   },
-  rvw.fontSize(14, 12),
 ])
 
 export const input = style([
@@ -26,6 +25,8 @@ export const input = style([
     color: colors.base.black,
     outline: 'none',
     transition: 'all 0.2s ease-in-out',
+    fontSize: '16px',
+    padding: '12px',
     ':focus': {
       outline: '2px solid transparent',
       outlineOffset: '2px',
@@ -36,6 +37,4 @@ export const input = style([
       color: '#9ca3af',
     },
   },
-  rvw.padding(12, 8),
-  rvw.fontSize(16, 14),
 ])

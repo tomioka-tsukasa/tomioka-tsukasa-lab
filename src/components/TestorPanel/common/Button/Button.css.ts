@@ -1,22 +1,22 @@
 import { style, styleVariants } from '@vanilla-extract/css'
 import { colors } from '@/styles/variables'
-import { rvw, hover } from '@/styles/responsive.css'
+import { hover } from '@/styles/responsive.css'
 
 export const base = style([
   {
     border: 'none',
-    borderRadius: '6px',
+    borderRadius: '3px',
     fontWeight: '500',
     transition: 'all 0.2s ease-in-out',
     cursor: 'pointer',
     outline: 'none',
+    padding: '12px 24px',
     ':focus': {
       outline: '2px solid transparent',
       outlineOffset: '2px',
       boxShadow: '0 0 0 2px rgba(59, 130, 246, 0.5)',
     },
   },
-  rvw.padding(16, 12),
 ])
 
 export const variants = styleVariants({
@@ -54,15 +54,21 @@ export const variants = styleVariants({
 
 export const sizes = styleVariants({
   small: [
-    rvw.padding(12, 8),
-    rvw.fontSize(14, 12),
+    {
+      padding: '6px 12px',
+      fontSize: '14px',
+    },
   ],
   medium: [
-    rvw.padding(16, 12),
-    rvw.fontSize(16, 14),
+    {
+      padding: '8px 16px',
+      fontSize: '16px',
+    },
   ],
   large: [
-    rvw.padding(24, 18),
-    rvw.fontSize(18, 16),
+    {
+      padding: '12px 24px',
+      fontSize: '18px',
+    },
   ],
 })

@@ -1,6 +1,5 @@
 import { style } from '@vanilla-extract/css'
 import { colors } from '@/styles/variables'
-import { rvw } from '@/styles/responsive.css'
 
 export const container = style([
   {
@@ -14,10 +13,8 @@ export const container = style([
 export const header = style([
   {
     borderBottom: '1px solid #e5e7eb',
+    padding: '12px 16px',
   },
-  rvw.padding(16, 12),
-  rvw.paddingTop(12, 10),
-  rvw.paddingBottom(12, 10),
 ])
 
 export const title = style([
@@ -25,10 +22,12 @@ export const title = style([
     fontWeight: '600',
     color: '#1f2937',
     margin: 0,
+    fontSize: '18px',
   },
-  rvw.fontSize(18, 16),
 ])
 
 export const content = style([
-  rvw.padding(16, 12),
+  {
+    padding: '16px',
+  },
 ])
