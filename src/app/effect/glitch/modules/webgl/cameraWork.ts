@@ -3,7 +3,7 @@ export const cameraWork = {
     position: {
       x: 0,
       y: 10,
-      z: 13,
+      z: 14.2,
       mobile: {
         x: 0,
         y: 60,

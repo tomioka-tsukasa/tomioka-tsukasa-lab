@@ -35,6 +35,7 @@ import { fixCamerawork } from '@/lib/threejs/fixCamerawork/fixCamerawork'
 const initWebGL: InitWebGL = (
   loadingComplete,
   loadedAssets,
+  onWebGLReady?,
 ) => {
   const canvas = document.querySelector('#canvas') as HTMLCanvasElement
 
@@ -210,11 +211,6 @@ const initWebGL: InitWebGL = (
 
   const imageChangerNoiseCtrl = imageChangerNoise(loadedAssets)
 
-  // ディレイ後にグリッチを発動（テスト用）
-  setTimeout(() => {
-    imageChangerNoiseCtrl.triggerGlitch(0.24)
-  }, 500)
-
   /**
    * グリッドヘルパー
    */
@@ -334,6 +330,12 @@ const initWebGL: InitWebGL = (
   webglCtrl.envmaps = loadedAssets.envmaps
   webglCtrl.textures = loadedAssets.textures
   webglCtrl.controls = controls
+  webglCtrl.imageChangerNoiseCtrl = imageChangerNoiseCtrl
+
+  // WebGLコンテキストに登録
+  if (onWebGLReady) {
+    onWebGLReady(imageChangerNoiseCtrl)
+  }
 
   /**
    * 初期化完了通知
@@ -348,6 +350,7 @@ const initWebGL: InitWebGL = (
  */
 export const createWebGL: CreateWebGL = (
   loadingComplete,
+  onWebGLReady?,
 ) => {
   if (!window) return
 
@@ -356,6 +359,7 @@ export const createWebGL: CreateWebGL = (
       initWebGL(
         loadingComplete,
         loadedAssets,
+        onWebGLReady,
       )
     },
     loadingAssets,

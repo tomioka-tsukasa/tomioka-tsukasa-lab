@@ -3,11 +3,25 @@ import { LoadedAssets } from './setupMember'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js'
 
+export interface ImageChangerNoiseCtrl {
+  mesh: THREE.Mesh<THREE.PlaneGeometry, THREE.ShaderMaterial>
+  currentPhase: number
+  update: () => void
+  triggerGlitch: (duration?: number) => void
+  updateShaderParams: (params: {
+    planeHeight?: number
+    ampliHeight?: number
+    glitchIntensity?: number
+  }) => void
+  resetGlitch: () => void
+}
+
 /**
  * WebGLを生成する関数の型
  */
 export type CreateWebGL = (
   loadingComplete: () => void,
+  onWebGLReady?: (ctrl: ImageChangerNoiseCtrl) => void,
 ) => void
 
 /**
@@ -16,6 +30,7 @@ export type CreateWebGL = (
 export type InitWebGL = (
   loadingComplete: () => void,
   loadedAssets: LoadedAssets,
+  onWebGLReady?: (ctrl: ImageChangerNoiseCtrl) => void,
 ) => void
 
 /**
@@ -31,4 +46,5 @@ export type WebGLCtrl = {
   controls: OrbitControls | null
   car: GLTF | null
   world: GLTF | null
+  imageChangerNoiseCtrl?: ImageChangerNoiseCtrl
 }

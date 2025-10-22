@@ -1,6 +1,9 @@
 uniform float u_time;
 uniform float u_glitch_progress;
 uniform float u_phase;
+uniform float u_plane_height;
+uniform float u_ampli_height;
+uniform float u_glitch_intensity;
 varying vec2 vUv;
 varying vec2 vPosition;
 
@@ -18,9 +21,9 @@ void main() {
   vec3 newPosition = position;
 
   // ========== パラメータ ==========
-  float planeHeight = 20.0;
-  float ampliHeight = 1.6;
-  float glitchIntensity = 10.2;
+  float planeHeight = u_plane_height;
+  float ampliHeight = u_ampli_height;
+  float glitchIntensity = u_glitch_intensity;
 
   // ========== Y軸中心からの距離計算 ==========
   // Y軸方向の中心（Y=0）からの距離を計算

@@ -1,5 +1,4 @@
 import * as THREE from 'three'
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { webglCtrl } from '../../setupMember'
 import gsap from 'gsap'
 import CustomEase from 'gsap/CustomEase'

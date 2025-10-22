@@ -7,6 +7,14 @@ export type UpdateImageChangerState = () => void
 
 export type TriggerGlitch = (duration?: number) => void
 
+export type UpdateShaderParams = (params: {
+  planeHeight?: number
+  ampliHeight?: number
+  glitchIntensity?: number
+}) => void
+
+export type ResetGlitch = () => void
+
 export type ImageChangerNoise = (
   loadedAssets: LoadedAssets,
 ) => {
@@ -14,6 +22,8 @@ export type ImageChangerNoise = (
   currentPhase: number
   update: UpdateImageChangerState,
   triggerGlitch: TriggerGlitch,
+  updateShaderParams: UpdateShaderParams,
+  resetGlitch: ResetGlitch,
 }
 
 export const imageChangerNoise: ImageChangerNoise = (
@@ -48,6 +58,9 @@ export const imageChangerNoise: ImageChangerNoise = (
       u_texture_02: { value: loadedAssets.textures['sample-02'] },
       u_phase: { value: PHASES.PHASE_1 },
       u_glitch_progress: { value: 0.0 },
+      u_plane_height: { value: 20.0 },
+      u_ampli_height: { value: 1.6 },
+      u_glitch_intensity: { value: 10.2 },
     },
     wireframe: false,
     side: THREE.DoubleSide,
@@ -69,6 +82,37 @@ export const imageChangerNoise: ImageChangerNoise = (
       currentPhase = PHASES.PHASE_GLITCH
       console.log(`Glitch triggered! Duration: ${duration}s`)
     }
+  }
+
+  /**
+   * シェーダーパラメータ更新
+   */
+  const updateShaderParams: UpdateShaderParams = (params) => {
+    if (params.planeHeight !== undefined) {
+      mesh.material.uniforms.u_plane_height.value = params.planeHeight
+    }
+    if (params.ampliHeight !== undefined) {
+      mesh.material.uniforms.u_ampli_height.value = params.ampliHeight
+    }
+    if (params.glitchIntensity !== undefined) {
+      mesh.material.uniforms.u_glitch_intensity.value = params.glitchIntensity
+    }
+  }
+
+  /**
+   * グリッチリセット
+   */
+  const resetGlitch: ResetGlitch = () => {
+    currentPhase = PHASES.PHASE_1
+    isGlitchActive = false
+    glitchStartTime = 0
+    fadeoutStartTime = 0
+
+    // uniformsもリセット
+    mesh.material.uniforms.u_phase.value = PHASES.PHASE_1
+    mesh.material.uniforms.u_glitch_progress.value = 0.0
+
+    console.log('Glitch effect reset to initial state')
   }
 
   /**
@@ -119,5 +163,7 @@ export const imageChangerNoise: ImageChangerNoise = (
     mesh,
     currentPhase,
     triggerGlitch,
+    updateShaderParams,
+    resetGlitch,
   }
 }

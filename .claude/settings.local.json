@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "WebSearch",
-      "WebFetch(domain:thebookofshaders.com)"
+      "WebFetch(domain:thebookofshaders.com)",
+      "Bash(mkdir:*)"
     ],
     "deny": [],
     "ask": []
