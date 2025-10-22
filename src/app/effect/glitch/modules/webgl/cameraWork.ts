@@ -6,8 +6,8 @@ export const cameraWork = {
       z: 14.2,
       mobile: {
         x: 0,
-        y: 60,
-        z: 0,
+        y: 10,
+        z: 14.2,
       },
     },
     target: {
@@ -16,7 +16,7 @@ export const cameraWork = {
       z: 0,
       mobile: {
         x: 0,
-        y: 0,
+        y: 10,
         z: 0,
       },
     },
