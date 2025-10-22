@@ -1,7 +1,7 @@
 import * as canvasStyles from '@/components/Canvas/Canvas.css'
 import Canvas from './components/Canvas/CanvasWrapper'
 import { Testor } from './components/Testor/Testor'
-// import { LoadingScreen } from '@/components/LoadingScreen/LoadingScreen'
+import { LoadingScreen } from '@/components/LoadingScreen/LoadingScreen'
 
 export default function GlitchLayout({
   children,
@@ -9,7 +9,7 @@ export default function GlitchLayout({
   children: React.ReactNode
 }) {
   return <>
-    {/* <LoadingScreen /> */}
+    <LoadingScreen />
     <div className={canvasStyles.canvasContainer}>
       <div className={canvasStyles.canvasInner}>
         <div className={canvasStyles.canvas}>
