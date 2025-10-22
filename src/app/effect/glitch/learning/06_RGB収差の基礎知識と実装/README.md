@@ -1,4 +1,4 @@
-# 第8章: RGB収差の基礎知識と実装
+# 第6章: RGB収差の基礎知識と実装
 
 ## RGB収差（色収差/Chromatic Aberration）とは？
 

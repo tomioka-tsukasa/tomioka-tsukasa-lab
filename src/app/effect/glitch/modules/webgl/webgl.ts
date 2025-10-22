@@ -212,7 +212,7 @@ const initWebGL: InitWebGL = (
 
   // ディレイ後にグリッチを発動（テスト用）
   setTimeout(() => {
-    imageChangerNoiseCtrl.triggerGlitch(0.5)
+    imageChangerNoiseCtrl.triggerGlitch(0.24)
   }, 500)
 
   /**

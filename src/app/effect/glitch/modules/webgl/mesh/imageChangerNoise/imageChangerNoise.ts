@@ -21,9 +21,10 @@ export const imageChangerNoise: ImageChangerNoise = (
 ) => {
   // フェーズ定数
   const PHASES = {
-    PHASE_1: 0.0,       // 画像1フェーズ
-    PHASE_GLITCH: 1.0,  // 切り替えフェーズ（グリッチ）
-    PHASE_2: 2.0,       // 画像2フェーズ（完了）
+    PHASE_1: 0.0,         // 画像1フェーズ
+    PHASE_GLITCH: 1.0,    // 切り替えフェーズ（グリッチ）
+    PHASE_FADEOUT: 2.0,   // フェードアウトフェーズ
+    PHASE_2: 3.0,         // 画像2フェーズ（完了）
   }
 
   // 状態管理用の変数
@@ -31,6 +32,7 @@ export const imageChangerNoise: ImageChangerNoise = (
   let isGlitchActive = false
   let glitchStartTime = 0
   let glitchDuration = 1.0 // デフォルト1秒
+  let fadeoutStartTime = 0
 
   /**
    * メッシュ生成
@@ -84,11 +86,27 @@ export const imageChangerNoise: ImageChangerNoise = (
       mesh.material.uniforms.u_glitch_progress.value = glitchProgress
 
       if (glitchProgress >= 1.0) {
-        // グリッチ完了
+        // グリッチ完了 → フェードアウト開始
+        currentPhase = PHASES.PHASE_FADEOUT
+        fadeoutStartTime = mesh.material.uniforms.u_time.value
+        console.log('Glitch completed → Starting fadeout')
+      }
+    }
+
+    // フェードアウト処理
+    if (currentPhase === PHASES.PHASE_FADEOUT) {
+      const elapsed = mesh.material.uniforms.u_time.value - fadeoutStartTime
+      const fadeoutProgress = Math.min(elapsed / glitchDuration, 1.0)
+
+      // 1.0から0.0へフェードアウト
+      mesh.material.uniforms.u_glitch_progress.value = 1.0 - fadeoutProgress
+
+      if (fadeoutProgress >= 1.0) {
+        // フェードアウト完了
         isGlitchActive = false
         currentPhase = PHASES.PHASE_2
         mesh.material.uniforms.u_glitch_progress.value = 0.0
-        console.log('Glitch completed → Image 2')
+        console.log('Fadeout completed → Image 2')
       }
     }
 

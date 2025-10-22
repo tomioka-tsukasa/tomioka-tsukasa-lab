@@ -1,10 +1,10 @@
 varying vec2 vUv;
+varying vec2 vPosition;
 uniform float u_time;
 uniform sampler2D u_texture_01;
 uniform sampler2D u_texture_02;
 uniform float u_phase;
 uniform float u_glitch_progress;
-varying vec2 vPosition;
 
 float random(float x) {
   return fract(sin(x * 12.9898) * 43758.5453);
@@ -91,6 +91,7 @@ void main() {
     float effectMask = step(randomNoise, u_glitch_progress);
 
     result = mix(tex01, tex02, effectMask);
+    // result = tex01;
   } else if (u_phase >= 2.0) {
     // 完了: 画像2固定
     result = tex02;
