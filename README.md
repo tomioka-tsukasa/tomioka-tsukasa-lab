@@ -72,3 +72,20 @@ src/app/effect/glitch/modules/webgl/shaders/
 - **保守性**: 関数ライブラリを一元管理
 - **可読性**: シェーダーファイルの簡潔化
 - **Unity互換**: Unity ShaderLabと同じ`#include`記法
+
+#### 依存関係管理
+
+シェーダーライブラリには依存関係があるため、正しい順序で#includeしてください：
+
+```glsl
+// ✅ 正しい順序
+#include "@/lib/shader/random/random.glsl"        // 基本関数（依存なし）
+#include "@/lib/shader/glitch/scan-line-noise.glsl"  // random2d()が必要
+#include "@/lib/shader/aberration/rgb-aberration.glsl"  // 依存なし
+
+// ❌ 間違った順序（コンパイルエラー）
+#include "@/lib/shader/glitch/scan-line-noise.glsl"  // random2d()が未定義でエラー
+#include "@/lib/shader/random/random.glsl"
+```
+
+各ライブラリファイルのDoxygenコメントに`@dependencies`セクションで依存関係を明記しています。

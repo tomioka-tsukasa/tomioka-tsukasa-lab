@@ -6,49 +6,9 @@ uniform sampler2D u_texture_02;
 uniform float u_phase;
 uniform float u_glitch_progress;
 
-float random(float x) {
-  return fract(sin(x * 12.9898) * 43758.5453);
-}
-
-float random2d(vec2 st) {
-  return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
-}
-
+#include "@/lib/shader/random/random.glsl"
 #include "@/lib/shader/glitch/scan-line-noise.glsl"
-
-vec3 aberration_texture_time(
-  vec2 uv,
-  sampler2D tex,
-  float time
-) {
-  // 時間とともに収差の強度が変化
-  float aberration = sin(time) * 0.003 + 0.005;
-
-  // 収差の方向が回転
-  float angle = time * 0.5;
-  vec2 direction = vec2(cos(angle), sin(angle));
-  vec2 redOffset = direction * aberration;
-  vec2 blueOffset = -direction * aberration;
-
-  float t2_r = texture2D(tex, uv + redOffset).r;
-  float t2_g = texture2D(tex, uv).g;
-  float t2_b = texture2D(tex, uv + blueOffset).b;
-
-  return vec3(t2_r, t2_g, t2_b);
-}
-
-vec3 aberration_texture(
-  vec2 uv,
-  sampler2D tex,
-  vec2 r_offset,
-  vec2 b_offset
-) {
-  float r = texture2D(tex, uv + r_offset).r;
-  float g = texture2D(tex, uv).g;
-  float b = texture2D(tex, uv + b_offset).b;
-
-  return vec3(r, g, b);
-}
+#include "@/lib/shader/aberration/rgb-aberration.glsl"
 
 vec3 effected_tex(
   sampler2D tex,

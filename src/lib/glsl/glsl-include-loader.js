@@ -112,7 +112,7 @@ function processIncludes(source, filePath, processedFiles = new Set()) {
     }
   })
 
-  // 成功した場合のサマリー（初回のみ）
+  // サマリー（初回のみ）
   if (CONFIG.logging.enabled && CONFIG.logging.showSuccess && matches.length > 0 && !loggedFiles.has(fileKey + '-summary')) {
     console.log(`✅ Successfully included ${successCount}/${matches.length} files in ${relativePath}`)
     console.log('==================================\n')

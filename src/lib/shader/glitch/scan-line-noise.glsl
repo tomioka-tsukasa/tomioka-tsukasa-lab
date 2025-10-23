@@ -11,6 +11,10 @@
  *
  * @return vec3 走査線ノイズの結果 (RGB全て同じ値)
  *
+ * @dependencies
+ * 依存関数リスト
+ * - @/lib/shader/random/random.glsl (random2d関数が必要)
+ *
  * @details
  * アルゴリズム:
  * 1. Y座標に基づいて走査線位置を計算
