@@ -53,13 +53,18 @@ function resolvePath(includePath, currentFilePath) {
 }
 
 module.exports = function(source) {
+  // 開発環境でキャッシュを無効化
+  if (process.env.NODE_ENV === 'development') {
+    this.cacheable(false)
+  }
+
   // #includeを処理
-  const processedSource = processIncludes(source, this.resourcePath)
+  const processedSource = processIncludes(source, this.resourcePath, new Set(), this)
 
   return processedSource
 }
 
-function processIncludes(source, filePath, processedFiles = new Set()) {
+function processIncludes(source, filePath, processedFiles = new Set(), loaderContext = null) {
   const includeRegex = /#include\s+["<]([^">]+)[">]/g
 
   // プロジェクトルートからの相対パス取得
@@ -79,10 +84,16 @@ function processIncludes(source, filePath, processedFiles = new Set()) {
 
     try {
       processedFiles.add(fullPath)
+
+      // webpackに依存関係を通知
+      if (loaderContext && loaderContext.addDependency) {
+        loaderContext.addDependency(fullPath)
+      }
+
       const includeContent = fs.readFileSync(fullPath, 'utf-8')
 
       // 再帰的に処理
-      const processedContent = processIncludes(includeContent, fullPath, processedFiles)
+      const processedContent = processIncludes(includeContent, fullPath, processedFiles, loaderContext)
 
       return `\n// === BEGIN INCLUDE: ${includePath} ===\n${processedContent}\n// === END INCLUDE: ${includePath} ===\n`
     } catch (error) {
