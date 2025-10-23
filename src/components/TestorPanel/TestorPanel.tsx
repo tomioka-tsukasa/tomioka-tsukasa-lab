@@ -28,7 +28,7 @@ export const TestorPanel = ({
   const [settings, setSettings] = useState<GlitchSettings>({
     planeHeight: 20.0,
     ampliHeight: 1.6,
-    glitchIntensity: 10.2,
+    glitchIntensity: 2.0,
     duration: 0.24,
     texture1Path: '/assets/images/samples/effect-glitch-sample-01.jpg',
     texture2Path: '/assets/images/samples/effect-glitch-sample-02.jpg'

@@ -16,11 +16,20 @@ void main() {
   // ========== Y軸グリッチエフェクト ==========
   float glitchOffset = glitch_wave(
     newPosition,
+    uv,
+
+    // uniforms
     u_time,
     u_plane_height,
     u_ampli_height,
     u_glitch_intensity,
-    u_glitch_progress
+    u_glitch_progress,
+
+    // parameters
+    6.,   // high
+    3.,   // mid
+    1.,   // low
+    1.    // wave_speed
   );
 
   // ========== 頂点位置の変形 ==========
