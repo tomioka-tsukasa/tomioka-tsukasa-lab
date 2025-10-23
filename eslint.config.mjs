@@ -12,6 +12,16 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
   {
+    ignores: [
+      // Webpack loaders
+      'src/lib/glsl/glsl-include-loader.js',
+      // Build outputs
+      '.next/',
+      'out/',
+      'dist/',
+      // Dependencies
+      'node_modules/',
+    ],
     rules: {
       'eol-last': ['error', 'always'],
       'indent': ['error', 2, {'SwitchCase': 1}],

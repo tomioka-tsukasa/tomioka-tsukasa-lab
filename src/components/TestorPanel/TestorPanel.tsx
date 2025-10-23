@@ -55,17 +55,17 @@ export const TestorPanel = ({
     resetGlitch()
   }
 
-  const handleGlitchTrigger = (settings: GlitchSettings) => {
-    console.log('Glitch triggered with settings:', settings)
-    if (onGlitchTrigger) {
-      onGlitchTrigger(settings)
-    }
-  }
+  // const handleGlitchTrigger = (settings: GlitchSettings) => {
+  //   console.log('Glitch triggered with settings:', settings)
+  //   if (onGlitchTrigger) {
+  //     onGlitchTrigger(settings)
+  //   }
+  // }
 
   const renderEffectPanel = () => {
     switch (selectedEffect) {
       case 'glitch':
-        return <GlitchPanel onTrigger={handleGlitchTrigger} settings={settings} setSettings={setSettings} />
+        return <GlitchPanel settings={settings} setSettings={setSettings} />
       case 'wave':
         return (
           <Panel title='Wave Effect'>

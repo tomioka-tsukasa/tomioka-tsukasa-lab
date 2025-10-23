@@ -6,14 +6,12 @@ import { useGlitchControl } from './hooks/useGlitchControl'
 import * as styles from './GlitchPanel.css'
 
 interface GlitchPanelProps {
-  onTrigger: (settings: GlitchSettings) => void
   settings: GlitchSettings
   setSettings: React.Dispatch<React.SetStateAction<GlitchSettings>>
 }
 
-export const GlitchPanel = ({ onTrigger, settings, setSettings }: GlitchPanelProps) => {
+export const GlitchPanel = ({ settings, setSettings }: GlitchPanelProps) => {
   const { updateShaderParams } = useGlitchControl()
-
 
   const updateSetting = <K extends keyof GlitchSettings>(
     key: K,
