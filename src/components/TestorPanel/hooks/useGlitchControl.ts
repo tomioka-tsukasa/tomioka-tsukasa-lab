@@ -11,15 +11,23 @@ export const useGlitchControl = () => {
     if (imageChangerNoiseCtrl) {
       // シェーダーパラメータを更新
       imageChangerNoiseCtrl.updateShaderParams({
-        planeHeight: settings.planeHeight,
         ampliHeight: settings.ampliHeight,
-        glitchIntensity: settings.glitchIntensity
+        glitchIntensity: settings.glitchIntensity,
+        high: settings.high,
+        mid: settings.mid,
+        low: settings.low,
+        waveSpeed: settings.waveSpeed,
+        basisYAxis: settings.basisYAxis
       })
 
       console.log('Updated shader parameters:', {
-        planeHeight: settings.planeHeight,
         ampliHeight: settings.ampliHeight,
-        glitchIntensity: settings.glitchIntensity
+        glitchIntensity: settings.glitchIntensity,
+        high: settings.high,
+        mid: settings.mid,
+        low: settings.low,
+        waveSpeed: settings.waveSpeed,
+        basisYAxis: settings.basisYAxis
       })
 
       // テクスチャ更新は将来実装
@@ -38,9 +46,13 @@ export const useGlitchControl = () => {
   const updateShaderParams = useCallback((settings: GlitchSettings) => {
     if (imageChangerNoiseCtrl) {
       imageChangerNoiseCtrl.updateShaderParams({
-        planeHeight: settings.planeHeight,
         ampliHeight: settings.ampliHeight,
-        glitchIntensity: settings.glitchIntensity
+        glitchIntensity: settings.glitchIntensity,
+        high: settings.high,
+        mid: settings.mid,
+        low: settings.low,
+        waveSpeed: settings.waveSpeed,
+        basisYAxis: settings.basisYAxis
       })
     }
   }, [imageChangerNoiseCtrl])

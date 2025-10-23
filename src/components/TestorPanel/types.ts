@@ -1,10 +1,14 @@
 export interface GlitchSettings {
-  planeHeight: number
   ampliHeight: number
   glitchIntensity: number
   duration: number
   texture1Path: string
   texture2Path: string
+  high: number
+  mid: number
+  low: number
+  waveSpeed: number
+  basisYAxis: number
 }
 
 export type EffectType = 'glitch' | 'wave' | 'distortion'

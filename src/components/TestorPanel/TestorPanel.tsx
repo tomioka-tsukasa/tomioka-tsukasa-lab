@@ -26,12 +26,16 @@ export const TestorPanel = ({
   const { imageChangerNoiseCtrl } = useWebGL()
 
   const [settings, setSettings] = useState<GlitchSettings>({
-    planeHeight: 20.0,
     ampliHeight: 1.6,
     glitchIntensity: 2.0,
     duration: 0.24,
     texture1Path: '/assets/images/samples/effect-glitch-sample-01.jpg',
-    texture2Path: '/assets/images/samples/effect-glitch-sample-02.jpg'
+    texture2Path: '/assets/images/samples/effect-glitch-sample-02.jpg',
+    high: 6.0,
+    mid: 3.0,
+    low: 1.0,
+    waveSpeed: 1.0,
+    basisYAxis: 0.0
   })
 
   const toggleVisibility = () => {
@@ -131,7 +135,8 @@ export const TestorPanel = ({
             <p><strong>Glitch Effect:</strong></p>
             <ul className={styles.usageList}>
               <li>「演出開始」ボタンでグリッチエフェクトを発動</li>
-              <li>Vertex Shader パラメータ（planeHeight, ampliHeight, glitchIntensity）を調整可能</li>
+              <li>Vertex Shader パラメータ（ampliHeight, glitchIntensity）を調整可能</li>
+              <li>Wave パラメータ（high, mid, low, waveSpeed, basisYAxis）を調整可能</li>
               <li>エフェクトの持続時間を設定可能</li>
               <li>使用するテクスチャのパスを指定可能</li>
             </ul>

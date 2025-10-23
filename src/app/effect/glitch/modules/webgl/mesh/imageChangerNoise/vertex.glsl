@@ -4,6 +4,11 @@ uniform float u_phase;
 uniform float u_plane_height;
 uniform float u_ampli_height;
 uniform float u_glitch_intensity;
+uniform float u_high;
+uniform float u_mid;
+uniform float u_low;
+uniform float u_wave_speed;
+uniform float u_basis_y_axis;
 varying vec2 vUv;
 varying vec2 vPosition;
 
@@ -26,11 +31,11 @@ void main() {
     u_glitch_progress,
 
     // parameters
-    6.,   // high
-    3.,   // mid
-    1.,   // low
-    1.,   // wave_speed
-    0.    // basis_y_axis
+    u_high,        // high
+    u_mid,         // mid
+    u_low,         // low
+    u_wave_speed,  // wave_speed
+    u_basis_y_axis // basis_y_axis
   );
 
   // ========== 頂点位置の変形 ==========

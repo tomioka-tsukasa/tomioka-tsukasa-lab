@@ -8,9 +8,13 @@ export type UpdateImageChangerState = () => void
 export type TriggerGlitch = (duration?: number) => void
 
 export type UpdateShaderParams = (params: {
-  planeHeight?: number
   ampliHeight?: number
   glitchIntensity?: number
+  high?: number
+  mid?: number
+  low?: number
+  waveSpeed?: number
+  basisYAxis?: number
 }) => void
 
 export type ResetGlitch = () => void
@@ -61,6 +65,11 @@ export const imageChangerNoise: ImageChangerNoise = (
       u_plane_height: { value: 20.0 },
       u_ampli_height: { value: 1.6 },
       u_glitch_intensity: { value: 10.2 },
+      u_high: { value: 6.0 },
+      u_mid: { value: 3.0 },
+      u_low: { value: 1.0 },
+      u_wave_speed: { value: 1.0 },
+      u_basis_y_axis: { value: 0.0 },
     },
     wireframe: false,
     side: THREE.DoubleSide,
@@ -88,14 +97,26 @@ export const imageChangerNoise: ImageChangerNoise = (
    * シェーダーパラメータ更新
    */
   const updateShaderParams: UpdateShaderParams = (params) => {
-    if (params.planeHeight !== undefined) {
-      mesh.material.uniforms.u_plane_height.value = params.planeHeight
-    }
     if (params.ampliHeight !== undefined) {
       mesh.material.uniforms.u_ampli_height.value = params.ampliHeight
     }
     if (params.glitchIntensity !== undefined) {
       mesh.material.uniforms.u_glitch_intensity.value = params.glitchIntensity
+    }
+    if (params.high !== undefined) {
+      mesh.material.uniforms.u_high.value = params.high
+    }
+    if (params.mid !== undefined) {
+      mesh.material.uniforms.u_mid.value = params.mid
+    }
+    if (params.low !== undefined) {
+      mesh.material.uniforms.u_low.value = params.low
+    }
+    if (params.waveSpeed !== undefined) {
+      mesh.material.uniforms.u_wave_speed.value = params.waveSpeed
+    }
+    if (params.basisYAxis !== undefined) {
+      mesh.material.uniforms.u_basis_y_axis.value = params.basisYAxis
     }
   }
 

@@ -24,7 +24,7 @@ export const GlitchPanel = ({ settings, setSettings }: GlitchPanelProps) => {
     setSettings(newSettings)
 
     // シェーダーパラメータは即座に更新
-    if (key === 'planeHeight' || key === 'ampliHeight' || key === 'glitchIntensity') {
+    if (key === 'ampliHeight' || key === 'glitchIntensity' || key === 'high' || key === 'mid' || key === 'low' || key === 'waveSpeed' || key === 'basisYAxis') {
       updateShaderParams(newSettings)
     }
   }
@@ -33,15 +33,6 @@ export const GlitchPanel = ({ settings, setSettings }: GlitchPanelProps) => {
     <Panel title='Glitch Effect Controls'>
       <div className={styles.container}>
         <div className={styles.settingsGrid}>
-          <NumberInput
-            label='Plane Height'
-            value={settings.planeHeight}
-            onChange={(value) => updateSetting('planeHeight', value)}
-            min={1}
-            max={50}
-            step={0.1}
-          />
-
           <NumberInput
             label='Ampli Height'
             value={settings.ampliHeight}
@@ -66,6 +57,53 @@ export const GlitchPanel = ({ settings, setSettings }: GlitchPanelProps) => {
             onChange={(value) => updateSetting('duration', value)}
             min={0.1}
             max={5.0}
+            step={0.1}
+          />
+        </div>
+
+        <div className={styles.settingsGrid}>
+          <NumberInput
+            label='High Frequency'
+            value={settings.high}
+            onChange={(value) => updateSetting('high', value)}
+            min={0.1}
+            max={20.0}
+            step={0.1}
+          />
+
+          <NumberInput
+            label='Mid Frequency'
+            value={settings.mid}
+            onChange={(value) => updateSetting('mid', value)}
+            min={0.1}
+            max={20.0}
+            step={0.1}
+          />
+
+          <NumberInput
+            label='Low Frequency'
+            value={settings.low}
+            onChange={(value) => updateSetting('low', value)}
+            min={0.1}
+            max={20.0}
+            step={0.1}
+          />
+
+          <NumberInput
+            label='Wave Speed'
+            value={settings.waveSpeed}
+            onChange={(value) => updateSetting('waveSpeed', value)}
+            min={0.1}
+            max={10.0}
+            step={0.1}
+          />
+
+          <NumberInput
+            label='Basis Y-Axis (0=uniform, 1=distance based)'
+            value={settings.basisYAxis}
+            onChange={(value) => updateSetting('basisYAxis', value)}
+            min={0.0}
+            max={1.0}
             step={0.1}
           />
         </div>

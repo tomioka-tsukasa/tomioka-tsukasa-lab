@@ -9,9 +9,13 @@ export interface ImageChangerNoiseCtrl {
   update: () => void
   triggerGlitch: (duration?: number) => void
   updateShaderParams: (params: {
-    planeHeight?: number
     ampliHeight?: number
     glitchIntensity?: number
+    high?: number
+    mid?: number
+    low?: number
+    waveSpeed?: number
+    basisYAxis?: number
   }) => void
   resetGlitch: () => void
 }
