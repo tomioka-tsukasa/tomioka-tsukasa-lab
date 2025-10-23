@@ -1,4 +1,5 @@
 import type { NextConfig } from 'next'
+import type { Configuration } from 'webpack'
 
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin'
 const withVanillaExtract = createVanillaExtractPlugin()
@@ -11,20 +12,21 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true
   },
-  webpack: (config) => {
+  webpack: (config: Configuration) => {
     // 既存のGLSLルールを削除
-    config.module.rules = config.module.rules.filter((rule) => {
-      if (rule.test) {
+    config.module!.rules = config.module!.rules!.filter((rule) => {
+      if (rule && typeof rule === 'object' && 'test' in rule && rule.test) {
         const testStr = rule.test.toString()
         if (testStr.includes('glsl') || testStr.includes('vert') || testStr.includes('frag') || testStr.includes('vs') || testStr.includes('fs')) {
           return false
         }
       }
+
       return true
     })
 
     // 新しいGLSLルールを追加
-    config.module.rules.push({
+    config.module!.rules!.push({
       test: /\.(glsl|vs|fs|vert|frag)$/i,
       use: [
         'raw-loader',
@@ -34,7 +36,7 @@ const nextConfig: NextConfig = {
       ],
     })
 
-    config.module.rules.push({
+    config.module!.rules!.push({
       test: /\.(woff|woff2|eot|ttf|otf)$/i,
       type: 'asset/resource',
     })
