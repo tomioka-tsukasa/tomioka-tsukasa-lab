@@ -29,7 +29,12 @@ const nextConfig: NextConfig = {
     config.module!.rules!.push({
       test: /\.(glsl|vs|fs|vert|frag)$/i,
       use: [
-        'raw-loader',
+        {
+          loader: 'raw-loader',
+          options: {
+            esModule: false,
+          },
+        },
         {
           loader: require.resolve('./src/lib/glsl/glsl-include-loader.js'),
         },
