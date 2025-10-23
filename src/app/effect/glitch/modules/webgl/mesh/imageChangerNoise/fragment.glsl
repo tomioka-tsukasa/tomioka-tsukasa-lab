@@ -14,6 +14,8 @@ float random2d(vec2 st) {
   return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
 }
 
+#include "@/lib/shader/glitch/scan-line-noise.glsl"
+
 vec3 aberration_texture_time(
   vec2 uv,
   sampler2D tex,
@@ -48,28 +50,12 @@ vec3 aberration_texture(
   return vec3(r, g, b);
 }
 
-vec3 stripe_noise(
-  vec2 uv
-) {
-  float stripeCount = 420.0;
-  float stripe = mod(floor(uv.y * stripeCount), 2.4);
-  stripe = step(stripe, 0.9); // 0の時だけ1.0、他は0.0 (1:4の比率)
-
-  float noiseScale = 10.0;
-  float noise = random2d(uv * noiseScale);
-
-  // ストライプ部分でのみノイズを適用
-  vec3 result = vec3(noise * stripe);
-
-  return result;
-}
-
 vec3 effected_tex(
   sampler2D tex,
   vec2 uv,
   float time
 ) {
-  vec3 effect_stnoi = stripe_noise(vec2(uv.x, uv.y + time * 0.05));
+  vec3 effect_stnoi = scan_line_noise(vec2(uv.x, uv.y + time * 0.05), 420.0, 2.4, 10.0);
   vec3 ab_tex = aberration_texture(uv, tex, vec2(0.01, 0.0), vec2(-0.01, 0.0));
 
   vec3 result = ab_tex + effect_stnoi * 0.16;
