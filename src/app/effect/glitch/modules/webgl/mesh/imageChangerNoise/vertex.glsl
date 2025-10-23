@@ -29,7 +29,8 @@ void main() {
     6.,   // high
     3.,   // mid
     1.,   // low
-    1.    // wave_speed
+    1.,   // wave_speed
+    0.    // basis_y_axis
   );
 
   // ========== 頂点位置の変形 ==========
