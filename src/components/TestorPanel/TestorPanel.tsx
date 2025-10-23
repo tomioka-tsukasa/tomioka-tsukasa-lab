@@ -16,10 +16,11 @@ const effectOptions = [
 
 export const TestorPanel = ({
   effectType: initialEffectType,
-  onGlitchTrigger
+  onGlitchTrigger,
+  initialVisible = true
 }: TestorPanelProps) => {
   const [selectedEffect, setSelectedEffect] = useState<EffectType>(initialEffectType)
-  const [isVisible, setIsVisible] = useState(true)
+  const [isVisible, setIsVisible] = useState(initialVisible)
 
   const { triggerGlitch, resetGlitch } = useGlitchControl()
   const { imageChangerNoiseCtrl } = useWebGL()

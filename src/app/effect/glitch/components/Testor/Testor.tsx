@@ -29,6 +29,7 @@ const TestorContent = () => {
     <TestorPanel
       effectType='glitch'
       onGlitchTrigger={handleGlitchTrigger}
+      initialVisible={false}
     />
   )
 }

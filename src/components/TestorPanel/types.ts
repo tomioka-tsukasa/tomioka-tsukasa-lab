@@ -12,4 +12,5 @@ export type EffectType = 'glitch' | 'wave' | 'distortion'
 export interface TestorPanelProps {
   effectType: EffectType
   onGlitchTrigger?: (settings: GlitchSettings) => void
+  initialVisible?: boolean
 }
