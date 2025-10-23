@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback } from 'react'
-import { GlitchSettings } from '../types'
+import { GlitchSettings, ProgressMode } from '../types'
 import { useWebGL } from '../context/WebGLContext'
 
 export const useGlitchControl = () => {
@@ -61,9 +61,16 @@ export const useGlitchControl = () => {
     contextResetGlitch()
   }, [contextResetGlitch])
 
+  const setManualProgress = useCallback((progress: number, mode: ProgressMode = 'oneway') => {
+    if (imageChangerNoiseCtrl) {
+      imageChangerNoiseCtrl.setManualProgress?.(progress, mode)
+    }
+  }, [imageChangerNoiseCtrl])
+
   return {
     triggerGlitch,
     updateShaderParams,
-    resetGlitch
+    resetGlitch,
+    setManualProgress
   }
 }

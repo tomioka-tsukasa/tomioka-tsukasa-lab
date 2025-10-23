@@ -18,6 +18,7 @@ export interface ImageChangerNoiseCtrl {
     basisYAxis?: number
   }) => void
   resetGlitch: () => void
+  setManualProgress?: (progress: number, mode?: 'oneway' | 'roundtrip') => void
 }
 
 /**

@@ -67,7 +67,7 @@ export const fixedControls = style([
 
 export const toggleButton = style([
   {
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    backgroundColor: 'rgba(255, 255, 255, 1)',
     border: '1px solid rgba(0, 0, 0, 0.1)',
     borderRadius: '6px',
     cursor: 'pointer',
@@ -93,3 +93,16 @@ export const controlButtons = style([
     gap: '8px',
   },
 ])
+
+export const progressControlSection = style({
+  marginTop: '1rem',
+})
+
+export const rangeSliderSection = style({
+  marginTop: '1rem',
+})
+
+export const explanationText = style({
+  marginTop: '1rem',
+  fontSize: '0.875rem',
+})

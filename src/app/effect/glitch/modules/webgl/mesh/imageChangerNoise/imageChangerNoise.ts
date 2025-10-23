@@ -19,6 +19,8 @@ export type UpdateShaderParams = (params: {
 
 export type ResetGlitch = () => void
 
+export type SetManualProgress = (progress: number, mode?: 'oneway' | 'roundtrip') => void
+
 export type ImageChangerNoise = (
   loadedAssets: LoadedAssets,
 ) => {
@@ -28,6 +30,7 @@ export type ImageChangerNoise = (
   triggerGlitch: TriggerGlitch,
   updateShaderParams: UpdateShaderParams,
   resetGlitch: ResetGlitch,
+  setManualProgress: SetManualProgress,
 }
 
 export const imageChangerNoise: ImageChangerNoise = (
@@ -47,6 +50,7 @@ export const imageChangerNoise: ImageChangerNoise = (
   let glitchStartTime = 0
   let glitchDuration = 1.0 // デフォルト1秒
   let fadeoutStartTime = 0
+  let isManualMode = false
 
   /**
    * メッシュ生成
@@ -64,7 +68,7 @@ export const imageChangerNoise: ImageChangerNoise = (
       u_glitch_progress: { value: 0.0 },
       u_plane_height: { value: 20.0 },
       u_ampli_height: { value: 1.6 },
-      u_glitch_intensity: { value: 10.2 },
+      u_glitch_intensity: { value: 2.0 },
       u_high: { value: 6.0 },
       u_mid: { value: 3.0 },
       u_low: { value: 1.0 },
@@ -85,6 +89,7 @@ export const imageChangerNoise: ImageChangerNoise = (
    */
   const triggerGlitch: TriggerGlitch = (duration = 1.0) => {
     if (currentPhase === PHASES.PHASE_1) {
+      isManualMode = false // 自動モードに切り替え
       isGlitchActive = true
       glitchStartTime = mesh.material.uniforms.u_time.value
       glitchDuration = duration
@@ -128,6 +133,7 @@ export const imageChangerNoise: ImageChangerNoise = (
     isGlitchActive = false
     glitchStartTime = 0
     fadeoutStartTime = 0
+    isManualMode = false
 
     // uniformsもリセット
     mesh.material.uniforms.u_phase.value = PHASES.PHASE_1
@@ -137,11 +143,59 @@ export const imageChangerNoise: ImageChangerNoise = (
   }
 
   /**
+   * マニュアル進行度設定
+   */
+  const setManualProgress: SetManualProgress = (progress: number, mode: 'oneway' | 'roundtrip' = 'oneway') => {
+    isManualMode = true
+    const clampedProgress = Math.max(0, Math.min(1, progress))
+
+    if (mode === 'oneway') {
+      // Oneway Mode: 片道進行（progress=1でグリッチ最大）
+      if (clampedProgress === 0) {
+        currentPhase = PHASES.PHASE_1
+      } else if (clampedProgress < 1) {
+        currentPhase = PHASES.PHASE_GLITCH
+      } else {
+        currentPhase = PHASES.PHASE_2
+      }
+
+      mesh.material.uniforms.u_glitch_progress.value = clampedProgress
+      mesh.material.uniforms.u_phase.value = currentPhase
+
+    } else {
+      // Roundtrip Mode: 往復進行（progress=1で完了状態）
+      if (clampedProgress === 0) {
+        currentPhase = PHASES.PHASE_1
+        mesh.material.uniforms.u_glitch_progress.value = 0.0
+      } else if (clampedProgress < 0.5) {
+        // 0 → 0.5: グリッチ増加フェーズ
+        currentPhase = PHASES.PHASE_GLITCH
+        mesh.material.uniforms.u_glitch_progress.value = clampedProgress * 2.0 // 0→1にマップ
+      } else if (clampedProgress < 1.0) {
+        // 0.5 → 1.0: フェードアウトフェーズ
+        currentPhase = PHASES.PHASE_FADEOUT
+        mesh.material.uniforms.u_glitch_progress.value = 1.0 - (clampedProgress - 0.5) * 2.0 // 1→0にマップ
+      } else {
+        // 1.0: 完了状態
+        currentPhase = PHASES.PHASE_2
+        mesh.material.uniforms.u_glitch_progress.value = 0.0
+      }
+
+      mesh.material.uniforms.u_phase.value = currentPhase
+    }
+  }
+
+  /**
    * 状態アップデート
    */
   const update: UpdateImageChangerState = () => {
     // 時間を更新
     mesh.material.uniforms.u_time.value += 0.01
+
+    // マニュアルモードの場合は自動更新をスキップ
+    if (isManualMode) {
+      return
+    }
 
     // グリッチ処理
     if (isGlitchActive && currentPhase === PHASES.PHASE_GLITCH) {
@@ -186,5 +240,6 @@ export const imageChangerNoise: ImageChangerNoise = (
     triggerGlitch,
     updateShaderParams,
     resetGlitch,
+    setManualProgress,
   }
 }

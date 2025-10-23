@@ -1,3 +1,5 @@
+export type ProgressMode = 'oneway' | 'roundtrip'
+
 export interface GlitchSettings {
   ampliHeight: number
   glitchIntensity: number
@@ -9,6 +11,9 @@ export interface GlitchSettings {
   low: number
   waveSpeed: number
   basisYAxis: number
+  manualProgress: boolean
+  progressValue: number
+  progressMode: ProgressMode
 }
 
 export type EffectType = 'glitch' | 'wave' | 'distortion'
