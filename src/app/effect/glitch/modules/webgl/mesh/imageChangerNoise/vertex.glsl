@@ -7,9 +7,7 @@ uniform float u_glitch_intensity;
 varying vec2 vUv;
 varying vec2 vPosition;
 
-float random(float x) {
-  return fract(sin(x * 12.9898) * 43758.5453);
-}
+#include "@/lib/shader/random/random.glsl"
 
 float createComplexWave(float pos, float time) {
   float wave = sin(pos * 2.1 + time);
