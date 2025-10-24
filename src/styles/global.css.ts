@@ -1,6 +1,6 @@
 import {  globalStyle } from '@vanilla-extract/css'
 import { colors } from './variables'
-import { playfairDisplay } from './fontUtils'
+import { zenKakuGothicNew } from './fontUtils'
 
 globalStyle('html', {
   fontSize: '62.5%', // 10px = 1rem
@@ -11,7 +11,7 @@ globalStyle('body', {
   fontSize: '1.6rem',
   color: colors.base.white,
   backgroundColor: colors.base.bg,
-  ...playfairDisplay()
+  ...zenKakuGothicNew()
 })
 
 globalStyle('article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section', {

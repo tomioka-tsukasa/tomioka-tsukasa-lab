@@ -3,7 +3,8 @@
     "allow": [
       "WebSearch",
       "WebFetch(domain:thebookofshaders.com)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "mcp__figma-dev-mode-mcp-server__get_design_context"
     ],
     "deny": [],
     "ask": []

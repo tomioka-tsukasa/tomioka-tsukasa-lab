@@ -58,4 +58,4 @@ export const colors = {
  * フォント定義
  */
 
-export { basicFontStyle, zenOldMinchoStyle, playfairDisplayStyle, italianaStyle, bungeeHairlineStyle, type SetFontFamily } from './fontUtils'
+export { basicFontStyle, zenKakuGothicNewStyle, playfairDisplayStyle, italianaStyle, bungeeHairlineStyle, type SetFontFamily } from './fontUtils'

@@ -3,7 +3,7 @@ import type { StyleRule } from '@vanilla-extract/css'
 // フォントファミリーの基本定義
 export const basicFontStyle = '"Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif'
 export const notoSansStyle = `'Noto Sans JP', ${basicFontStyle}`
-export const zenOldMinchoStyle = 'var(--font-zen-old-mincho)'
+export const zenKakuGothicNewStyle = 'var(--font-zen-kaku-gothic-new)'
 export const playfairDisplayStyle = 'var(--font-playfair-display)'
 export const italianaStyle = 'var(--font-italiana)'
 export const bungeeHairlineStyle = 'var(--font-bungee-hairline)'
@@ -16,12 +16,12 @@ export type SetFontFamily = (
   }
 ) => StyleRule
 
-export const zenOldMincho: SetFontFamily = (option = {
+export const zenKakuGothicNew: SetFontFamily = (option = {
   weight: 400,
   style: 'normal',
 }) => {
   return {
-    fontFamily: zenOldMinchoStyle,
+    fontFamily: zenKakuGothicNewStyle,
     fontOpticalSizing: 'auto',
     fontWeight: option.weight,
     fontStyle: option.style,

@@ -1,12 +1,24 @@
 import type { Metadata } from 'next'
-import { Zen_Old_Mincho } from 'next/font/google'
+import { Zen_Kaku_Gothic_New, Italiana, Playfair_Display } from 'next/font/google'
 import '@/styles/global/globals'
 import '@/styles/global.css'
 import StoreProvider from '@/store/provider'
 import { GsapManager } from '@/components/GsapManager/GsapManager'
 
-const zenOldMincho = Zen_Old_Mincho({
-  variable: '--font-zen-old-mincho',
+const zenKakuGothicNew = Zen_Kaku_Gothic_New({
+  variable: '--font-zen-kaku-gothic-new',
+  weight: ['400', '500', '700', '900'],
+  subsets: ['latin'],
+})
+
+const italiana = Italiana({
+  variable: '--font-italiana',
+  weight: ['400'],
+  subsets: ['latin'],
+})
+
+const playfairDisplay = Playfair_Display({
+  variable: '--font-playfair-display',
   weight: ['400', '500', '700', '900'],
   subsets: ['latin'],
 })
@@ -46,7 +58,7 @@ export default function RootLayout({
     <StoreProvider>
       <GsapManager />
       <html lang='ja'>
-        <body className={`${zenOldMincho.variable}`}>
+        <body className={`${zenKakuGothicNew.variable} ${italiana.variable} ${playfairDisplay.variable}`}>
           {children}
         </body>
       </html>

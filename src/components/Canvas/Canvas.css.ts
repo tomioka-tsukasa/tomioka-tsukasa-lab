@@ -33,6 +33,7 @@ export const canvas = style([
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    opacity: 0.7,
   },
 ])
 

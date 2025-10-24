@@ -14,6 +14,7 @@ export const container = style([
     flexDirection: 'column',
     padding: '72px 16px 24px',
     gap: '24px',
+    pointerEvents: 'auto',
     '@media': {
       '(max-width: 768px)': {
         width: '100%',
@@ -62,6 +63,7 @@ export const fixedControls = style([
     display: 'flex',
     justifyContent: 'flex-end',
     gap: '8px',
+    pointerEvents: 'auto',
   },
 ])
 

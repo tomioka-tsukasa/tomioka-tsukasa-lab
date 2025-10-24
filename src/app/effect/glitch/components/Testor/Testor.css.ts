@@ -6,6 +6,7 @@ export const container = style([
     top: 0,
     right: 0,
     width: '400px',
+    pointerEvents: 'none',
     '@media': {
       '(max-width: 768px)': {
         width: '80vw',
