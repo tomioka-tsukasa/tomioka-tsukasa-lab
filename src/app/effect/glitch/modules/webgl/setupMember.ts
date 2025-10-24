@@ -174,6 +174,10 @@ export const loadingTextures: Array<LoadingObject> = [
     name: 'sample-02',
     path: '/assets/images/samples/effect-glitch-sample-02.jpg',
   },
+  {
+    name: 'sample-03',
+    path: '/assets/images/samples/effect-glitch-sample-03.jpg',
+  },
 ]
 
 /**

@@ -6,6 +6,7 @@ import { TestorPanelProps, EffectType, GlitchSettings, ProgressMode } from './ty
 import { useState } from 'react'
 import { useGlitchControl } from './hooks/useGlitchControl'
 import { useWebGL } from './context/WebGLContext'
+import { defaultGlitchSettings } from '@/app/effect/glitch/data/settings'
 import * as styles from './TestorPanel.css'
 
 const effectOptions = [
@@ -25,21 +26,7 @@ export const TestorPanel = ({
   const { triggerGlitch, resetGlitch, setManualProgress } = useGlitchControl()
   const { imageChangerNoiseCtrl } = useWebGL()
 
-  const [settings, setSettings] = useState<GlitchSettings>({
-    ampliHeight: 1.6,
-    glitchIntensity: 2.0,
-    duration: 0.24,
-    texture1Path: '/assets/images/samples/effect-glitch-sample-01.jpg',
-    texture2Path: '/assets/images/samples/effect-glitch-sample-02.jpg',
-    high: 6.0,
-    mid: 3.0,
-    low: 1.0,
-    waveSpeed: 1.0,
-    basisYAxis: 0.0,
-    manualProgress: true,
-    progressValue: 0.0,
-    progressMode: 'roundtrip'
-  })
+  const [settings, setSettings] = useState<GlitchSettings>(defaultGlitchSettings)
 
   const toggleVisibility = () => {
     setIsVisible(!isVisible)

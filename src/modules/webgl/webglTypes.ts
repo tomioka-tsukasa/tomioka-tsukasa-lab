@@ -19,6 +19,8 @@ export interface ImageChangerNoiseCtrl {
   }) => void
   resetGlitch: () => void
   setManualProgress?: (progress: number, mode?: 'oneway' | 'roundtrip') => void
+  setOnEffectCompleted: (callback: (() => void) | null) => void
+  setTextures: (texture1Key: string, texture2Key: string) => void
 }
 
 /**

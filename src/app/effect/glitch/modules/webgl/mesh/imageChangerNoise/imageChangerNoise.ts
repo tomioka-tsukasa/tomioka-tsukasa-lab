@@ -21,6 +21,12 @@ export type ResetGlitch = () => void
 
 export type SetManualProgress = (progress: number, mode?: 'oneway' | 'roundtrip') => void
 
+export type OnEffectCompleted = () => void
+
+export type SetOnEffectCompleted = (callback: OnEffectCompleted | null) => void
+
+export type SetTextures = (texture1Key: string, texture2Key: string) => void
+
 export type ImageChangerNoise = (
   loadedAssets: LoadedAssets,
 ) => {
@@ -31,6 +37,8 @@ export type ImageChangerNoise = (
   updateShaderParams: UpdateShaderParams,
   resetGlitch: ResetGlitch,
   setManualProgress: SetManualProgress,
+  setOnEffectCompleted: SetOnEffectCompleted,
+  setTextures: SetTextures,
 }
 
 export const imageChangerNoise: ImageChangerNoise = (
@@ -51,6 +59,7 @@ export const imageChangerNoise: ImageChangerNoise = (
   let glitchDuration = 1.0 // デフォルト1秒
   let fadeoutStartTime = 0
   let isManualMode = false
+  let onEffectCompleted: OnEffectCompleted | null = null
 
   /**
    * メッシュ生成
@@ -143,6 +152,26 @@ export const imageChangerNoise: ImageChangerNoise = (
   }
 
   /**
+   * テクスチャ設定
+   */
+  const setTextures: SetTextures = (texture1Key: string, texture2Key: string) => {
+    if (loadedAssets.textures[texture1Key] && loadedAssets.textures[texture2Key]) {
+      mesh.material.uniforms.u_texture_01.value = loadedAssets.textures[texture1Key]
+      mesh.material.uniforms.u_texture_02.value = loadedAssets.textures[texture2Key]
+      console.log(`Textures updated: ${texture1Key} → ${texture2Key}`)
+    } else {
+      console.warn(`Texture not found: ${texture1Key} or ${texture2Key}`)
+    }
+  }
+
+  /**
+   * 完了コールバック設定
+   */
+  const setOnEffectCompleted: SetOnEffectCompleted = (callback: OnEffectCompleted | null) => {
+    onEffectCompleted = callback
+  }
+
+  /**
    * マニュアル進行度設定
    */
   const setManualProgress: SetManualProgress = (progress: number, mode: 'oneway' | 'roundtrip' = 'oneway') => {
@@ -226,6 +255,11 @@ export const imageChangerNoise: ImageChangerNoise = (
         currentPhase = PHASES.PHASE_2
         mesh.material.uniforms.u_glitch_progress.value = 0.0
         console.log('Fadeout completed → Image 2')
+
+        // 完了コールバックを呼び出し
+        if (onEffectCompleted) {
+          onEffectCompleted()
+        }
       }
     }
 
@@ -241,5 +275,7 @@ export const imageChangerNoise: ImageChangerNoise = (
     updateShaderParams,
     resetGlitch,
     setManualProgress,
+    setOnEffectCompleted,
+    setTextures,
   }
 }

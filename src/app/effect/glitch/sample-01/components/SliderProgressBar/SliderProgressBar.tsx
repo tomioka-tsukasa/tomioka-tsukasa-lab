@@ -1,24 +1,23 @@
 import * as styles from './SliderProgressBar.css'
 
 interface SliderProgressBarProps {
-  bars?: {
-    active: boolean
-  }[]
+  currentIndex: number
+  totalCount: number
+  onSlideChange?: (index: number) => void
 }
 
 export const SliderProgressBar = ({
-  bars = [
-    { active: true },
-    { active: false },
-    { active: false }
-  ]
+  currentIndex,
+  totalCount,
+  onSlideChange
 }: SliderProgressBarProps) => {
   return (
     <div className={styles.root}>
-      {bars.map((bar, index) => (
-        <div
+      {Array.from({ length: totalCount }, (_, index) => (
+        <button
           key={index}
-          className={`${styles.bar} ${bar.active ? styles.barActive : styles.barInactive}`}
+          className={`${styles.bar} ${index === currentIndex ? styles.barActive : styles.barInactive}`}
+          onClick={() => onSlideChange?.(index)}
         />
       ))}
     </div>

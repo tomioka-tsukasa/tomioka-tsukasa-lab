@@ -7,6 +7,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode
   variant?: 'primary' | 'secondary' | 'danger'
   size?: 'small' | 'medium' | 'large'
+  disabled?: boolean
 }
 
 export const Button = ({
@@ -14,14 +15,19 @@ export const Button = ({
   variant = 'primary',
   size = 'medium',
   className = '',
+  disabled = false,
   ...props
 }: ButtonProps) => {
-  return (
-    <button
-      className={`${styles.variants[variant]} ${styles.sizes[size]} ${className}`}
-      {...props}
-    >
-      {children}
-    </button>
-  )
+  if (!disabled) {
+    return (
+      <button
+        className={`${styles.variants[variant]} ${styles.sizes[size]} ${className}`}
+        {...props}
+      >
+        {children}
+      </button>
+    )
+  }
+
+  return <></>
 }

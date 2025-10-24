@@ -17,7 +17,9 @@ export const bar = style([
   {
     backgroundColor: colors.text.white,
     borderRadius: 1,
-    transition: 'all 0.2s ease',
+    transition: 'all 0.5s cubic-bezier(0.25, 0, 0.1, 1)',
+    border: 'none',
+    cursor: 'pointer',
   },
   rvw.height(3),
 ])
