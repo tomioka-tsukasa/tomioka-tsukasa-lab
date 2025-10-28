@@ -19,7 +19,7 @@ export type UpdateShaderParams = (params: {
 
 export type ResetGlitch = () => void
 
-export type SetManualProgress = (progress: number) => void
+export type SetManualProgress = (textureProgress: number, glitchProgress?: number) => void
 
 export type OnEffectCompleted = () => void
 
@@ -159,16 +159,17 @@ export const imageChangerNoise: ImageChangerNoise = (
   /**
    * マニュアル進行度設定
    */
-  const setManualProgress: SetManualProgress = (progress: number) => {
+  const setManualProgress: SetManualProgress = (textureProgress: number, glitchProgress?: number) => {
     isManualMode = true
-    const clampedProgress = Math.max(0, Math.min(1, progress))
 
-    // テクスチャ進行度: 直線（0→1）
-    mesh.material.uniforms.u_texture_progress.value = clampedProgress
+    // テクスチャ進行度: 0.0→1.0
+    const clampedTextureProgress = Math.max(0, Math.min(1, textureProgress))
+    mesh.material.uniforms.u_texture_progress.value = clampedTextureProgress
 
-    // グリッチ進行度: 山なりカーブ（0→1→0）
-    const glitchProgress = Math.sin(Math.PI * clampedProgress)
-    mesh.material.uniforms.u_glitch_progress.value = glitchProgress
+    // グリッチ進行度: 指定された場合はその値、未指定の場合はテクスチャ進行度と同じ
+    const finalGlitchProgress = glitchProgress !== undefined ? glitchProgress : textureProgress
+    const clampedGlitchProgress = Math.max(0, Math.min(1, finalGlitchProgress))
+    mesh.material.uniforms.u_glitch_progress.value = clampedGlitchProgress
   }
 
   /**
@@ -183,23 +184,17 @@ export const imageChangerNoise: ImageChangerNoise = (
       return
     }
 
-    // グリッチ処理
+    // グリッチ処理（GSAP版: setManualProgressを使用）
     if (isGlitchActive) {
       const elapsed = mesh.material.uniforms.u_time.value - glitchStartTime
       const timeProgress = Math.min(elapsed / glitchDuration, 1.0)
 
-      // テクスチャ進行度: 直線（0→1）
-      mesh.material.uniforms.u_texture_progress.value = timeProgress
-
-      // グリッチ進行度: 山なりカーブ（0→1→0）
-      const glitchProgress = Math.sin(Math.PI * timeProgress)
-      mesh.material.uniforms.u_glitch_progress.value = glitchProgress
+      // setManualProgressを呼び出してGSAPと同じロジックを使用
+      setManualProgress(timeProgress)
 
       if (timeProgress >= 1.0) {
         // グリッチアニメーション完了
         isGlitchActive = false
-        mesh.material.uniforms.u_texture_progress.value = 1.0 // 完全に02
-        mesh.material.uniforms.u_glitch_progress.value = 0.0 // グリッチなし
         console.log('Glitch animation completed → Image 2')
 
         // 完了コールバックを呼び出し

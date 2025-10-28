@@ -3,7 +3,7 @@ import { GlitchSettings } from '@/components/TestorPanel/types'
 export const defaultGlitchSettings: GlitchSettings = {
   ampliHeight: 1.6,
   glitchIntensity: 2.0,
-  duration: 0.6,
+  duration: 0.4,
   texture1Path: '/assets/images/samples/effect-glitch-sample-01.jpg',
   texture2Path: '/assets/images/samples/effect-glitch-sample-02.jpg',
   high: 6.0,

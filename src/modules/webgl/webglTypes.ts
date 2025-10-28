@@ -18,7 +18,7 @@ export interface ImageChangerNoiseCtrl {
     basisYAxis?: number
   }) => void
   resetGlitch: () => void
-  setManualProgress?: (progress: number, mode?: 'oneway' | 'roundtrip') => void
+  setManualProgress?: (textureProgress: number, glitchProgress?: number) => void
   setOnEffectCompleted: (callback: (() => void) | null) => void
   setTextures: (texture1Key: string, texture2Key: string) => void
 }

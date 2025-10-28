@@ -55,9 +55,9 @@ export const useGlitchControl = () => {
     contextResetGlitch()
   }, [contextResetGlitch])
 
-  const setManualProgress = useCallback((progress: number) => {
+  const setManualProgress = useCallback((textureProgress: number, glitchProgress?: number) => {
     if (imageChangerNoiseCtrl) {
-      imageChangerNoiseCtrl.setManualProgress?.(progress)
+      imageChangerNoiseCtrl.setManualProgress?.(textureProgress, glitchProgress)
     }
   }, [imageChangerNoiseCtrl])
 

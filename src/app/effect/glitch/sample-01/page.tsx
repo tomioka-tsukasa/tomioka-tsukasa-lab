@@ -5,15 +5,16 @@ import { defaultGlitchSettings, sliderData } from '../data/settings'
 import { SliderChanger } from './components/SliderChanger/SliderChanger'
 import { SliderProgressBar } from './components/SliderProgressBar/SliderProgressBar'
 import { Title } from './components/Title/Title'
-import { useGlitchControl } from '@/components/TestorPanel/hooks/useGlitchControl'
 import { WebGLProvider, useWebGL } from '@/components/TestorPanel/context/WebGLContext'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useRef } from 'react'
 import { webglCtrl } from '@/app/effect/glitch/modules/webgl/setupMember'
+import { gsap } from 'gsap'
+import { CustomEase } from 'gsap/CustomEase'
 
 const HomePageContent = () => {
-  const { triggerGlitch } = useGlitchControl()
   const { imageChangerNoiseCtrl, setImageChangerNoiseCtrl } = useWebGL()
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
+  const animationRef = useRef<gsap.core.Tween | null>(null)
 
   /**
    * WebGL初期化を監視してContextに登録
@@ -70,7 +71,7 @@ const HomePageContent = () => {
   }, [imageChangerNoiseCtrl, handleEffectCompleted])
 
   /**
-   * スライド切り替え
+   * GSAP アニメーション付きスライド切り替え
    */
   const navigateToSlide = useCallback((targetIndex: number) => {
     if (targetIndex === currentSlideIndex) return
@@ -80,19 +81,47 @@ const HomePageContent = () => {
 
     if (!imageChangerNoiseCtrl || !currentSlide || !targetSlide) return
 
-    // テクスチャキーを直接使用（sample-01, sample-02, sample-03）
+    // 進行中のアニメーションがあれば停止
+    if (animationRef.current) {
+      animationRef.current.kill()
+    }
+
+    // テクスチャ設定
     const currentTextureKey = currentSlide.imagePath
     const targetTextureKey = targetSlide.imagePath
-
-    // 現在のテクスチャから次のテクスチャへの切り替え設定
     imageChangerNoiseCtrl.setTextures(currentTextureKey, targetTextureKey)
 
-    // グリッチエフェクト開始
-    triggerGlitch(defaultGlitchSettings)
+    // GSAPアニメーション開始
+    const target = {
+      textureProgress: 0,
+      glitchProgress: 0
+    }
+
+    animationRef.current = gsap.to(target, {
+      duration: defaultGlitchSettings.duration,
+      textureProgress: 1,
+      glitchProgress: 1,
+      ease: 'none', // ベースのイージングなし
+      onUpdate: () => {
+        // テクスチャ進行度: 直線的な0.0→1.0
+        const textureEased = gsap.parseEase(CustomEase.create('circ.in'))(target.textureProgress)
+
+        // グリッチ進行度: カスタムイージング（山なり）
+        const glitchEased = gsap.parseEase(CustomEase.create('custom', 'M0,0 C0.37,0.92 0.626,0.995 0.7,0.952 0.806,0.889 0.92,0.432 1,0'))(target.glitchProgress)
+
+        imageChangerNoiseCtrl.setManualProgress?.(textureEased, glitchEased)
+      },
+      onComplete: () => {
+        // 最終状態を確実に設定
+        imageChangerNoiseCtrl.setManualProgress?.(1.0, 0.0)
+        console.log('GSAP animation completed → Image 2')
+        animationRef.current = null
+      }
+    })
 
     // スライドインデックス更新
     setCurrentSlideIndex(targetIndex)
-  }, [currentSlideIndex, imageChangerNoiseCtrl, triggerGlitch])
+  }, [currentSlideIndex, imageChangerNoiseCtrl])
 
   /**
    * 前のスライドに切り替え
