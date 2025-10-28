@@ -1,4 +1,4 @@
-export type ProgressMode = 'oneway' | 'roundtrip'
+export type ProgressMode = 'oneway'
 
 export interface GlitchSettings {
   ampliHeight: number

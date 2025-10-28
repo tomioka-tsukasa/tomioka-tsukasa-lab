@@ -11,7 +11,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { webglCtrl } from '@/app/effect/glitch/modules/webgl/setupMember'
 
 const HomePageContent = () => {
-  const { triggerGlitch, resetGlitch } = useGlitchControl()
+  const { triggerGlitch } = useGlitchControl()
   const { imageChangerNoiseCtrl, setImageChangerNoiseCtrl } = useWebGL()
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
 
@@ -52,22 +52,7 @@ const HomePageContent = () => {
    */
   const handleEffectCompleted = useCallback(() => {
     console.log('Glitch effect completed! (PHASE_2 reached) - Precise callback')
-
-    resetGlitch()
-
-    // 次回切り替え用のテクスチャ準備
-    if (imageChangerNoiseCtrl) {
-      const currentSlide = sliderData[currentSlideIndex]
-      const nextSlideIndex = (currentSlideIndex + 1) % sliderData.length
-      const nextSlide = sliderData[nextSlideIndex]
-
-      if (currentSlide && nextSlide) {
-        // 現在表示中のテクスチャと次に切り替える予定のテクスチャを設定
-        imageChangerNoiseCtrl.setTextures(currentSlide.imagePath, nextSlide.imagePath)
-        console.log(`Next texture prepared: ${currentSlide.imagePath} -> ${nextSlide.imagePath}`)
-      }
-    }
-  }, [resetGlitch, imageChangerNoiseCtrl, currentSlideIndex])
+  }, [])
 
   /**
    * グリッチエフェクト完了コールバックを設定

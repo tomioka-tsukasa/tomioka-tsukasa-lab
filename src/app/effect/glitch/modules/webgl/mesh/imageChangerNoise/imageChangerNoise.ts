@@ -19,7 +19,7 @@ export type UpdateShaderParams = (params: {
 
 export type ResetGlitch = () => void
 
-export type SetManualProgress = (progress: number, mode?: 'oneway' | 'roundtrip') => void
+export type SetManualProgress = (progress: number) => void
 
 export type OnEffectCompleted = () => void
 
@@ -44,20 +44,10 @@ export type ImageChangerNoise = (
 export const imageChangerNoise: ImageChangerNoise = (
   loadedAssets: LoadedAssets,
 ) => {
-  // フェーズ定数
-  const PHASES = {
-    PHASE_1: 0.0,         // 画像1フェーズ
-    PHASE_GLITCH: 1.0,    // 切り替えフェーズ（グリッチ）
-    PHASE_FADEOUT: 2.0,   // フェードアウトフェーズ
-    PHASE_2: 3.0,         // 画像2フェーズ（完了）
-  }
-
-  // 状態管理用の変数
-  let currentPhase = PHASES.PHASE_1
+  // 状態管理用の変数（フェーズ不要）
   let isGlitchActive = false
   let glitchStartTime = 0
   let glitchDuration = 1.0 // デフォルト1秒
-  let fadeoutStartTime = 0
   let isManualMode = false
   let onEffectCompleted: OnEffectCompleted | null = null
 
@@ -73,7 +63,7 @@ export const imageChangerNoise: ImageChangerNoise = (
       u_time: { value: 0 },
       u_texture_01: { value: loadedAssets.textures['sample-01'] },
       u_texture_02: { value: loadedAssets.textures['sample-02'] },
-      u_phase: { value: PHASES.PHASE_1 },
+      u_texture_progress: { value: 0.0 },
       u_glitch_progress: { value: 0.0 },
       u_plane_height: { value: 20.0 },
       u_ampli_height: { value: 1.6 },
@@ -97,14 +87,11 @@ export const imageChangerNoise: ImageChangerNoise = (
    * グリッチトリガー
    */
   const triggerGlitch: TriggerGlitch = (duration = 1.0) => {
-    if (currentPhase === PHASES.PHASE_1) {
-      isManualMode = false // 自動モードに切り替え
-      isGlitchActive = true
-      glitchStartTime = mesh.material.uniforms.u_time.value
-      glitchDuration = duration
-      currentPhase = PHASES.PHASE_GLITCH
-      console.log(`Glitch triggered! Duration: ${duration}s`)
-    }
+    isManualMode = false // 自動モードに切り替え
+    isGlitchActive = true
+    glitchStartTime = mesh.material.uniforms.u_time.value
+    glitchDuration = duration
+    console.log(`Glitch triggered! Duration: ${duration}s`)
   }
 
   /**
@@ -138,14 +125,12 @@ export const imageChangerNoise: ImageChangerNoise = (
    * グリッチリセット
    */
   const resetGlitch: ResetGlitch = () => {
-    currentPhase = PHASES.PHASE_1
     isGlitchActive = false
     glitchStartTime = 0
-    fadeoutStartTime = 0
     isManualMode = false
 
     // uniformsもリセット
-    mesh.material.uniforms.u_phase.value = PHASES.PHASE_1
+    mesh.material.uniforms.u_texture_progress.value = 0.0
     mesh.material.uniforms.u_glitch_progress.value = 0.0
 
     console.log('Glitch effect reset to initial state')
@@ -174,44 +159,16 @@ export const imageChangerNoise: ImageChangerNoise = (
   /**
    * マニュアル進行度設定
    */
-  const setManualProgress: SetManualProgress = (progress: number, mode: 'oneway' | 'roundtrip' = 'oneway') => {
+  const setManualProgress: SetManualProgress = (progress: number) => {
     isManualMode = true
     const clampedProgress = Math.max(0, Math.min(1, progress))
 
-    if (mode === 'oneway') {
-      // Oneway Mode: 片道進行（progress=1でグリッチ最大）
-      if (clampedProgress === 0) {
-        currentPhase = PHASES.PHASE_1
-      } else if (clampedProgress < 1) {
-        currentPhase = PHASES.PHASE_GLITCH
-      } else {
-        currentPhase = PHASES.PHASE_2
-      }
+    // テクスチャ進行度: 直線（0→1）
+    mesh.material.uniforms.u_texture_progress.value = clampedProgress
 
-      mesh.material.uniforms.u_glitch_progress.value = clampedProgress
-      mesh.material.uniforms.u_phase.value = currentPhase
-
-    } else {
-      // Roundtrip Mode: 往復進行（progress=1で完了状態）
-      if (clampedProgress === 0) {
-        currentPhase = PHASES.PHASE_1
-        mesh.material.uniforms.u_glitch_progress.value = 0.0
-      } else if (clampedProgress < 0.5) {
-        // 0 → 0.5: グリッチ増加フェーズ
-        currentPhase = PHASES.PHASE_GLITCH
-        mesh.material.uniforms.u_glitch_progress.value = clampedProgress * 2.0 // 0→1にマップ
-      } else if (clampedProgress < 1.0) {
-        // 0.5 → 1.0: フェードアウトフェーズ
-        currentPhase = PHASES.PHASE_FADEOUT
-        mesh.material.uniforms.u_glitch_progress.value = 1.0 - (clampedProgress - 0.5) * 2.0 // 1→0にマップ
-      } else {
-        // 1.0: 完了状態
-        currentPhase = PHASES.PHASE_2
-        mesh.material.uniforms.u_glitch_progress.value = 0.0
-      }
-
-      mesh.material.uniforms.u_phase.value = currentPhase
-    }
+    // グリッチ進行度: 山なりカーブ（0→1→0）
+    const glitchProgress = Math.sin(Math.PI * clampedProgress)
+    mesh.material.uniforms.u_glitch_progress.value = glitchProgress
   }
 
   /**
@@ -227,34 +184,23 @@ export const imageChangerNoise: ImageChangerNoise = (
     }
 
     // グリッチ処理
-    if (isGlitchActive && currentPhase === PHASES.PHASE_GLITCH) {
+    if (isGlitchActive) {
       const elapsed = mesh.material.uniforms.u_time.value - glitchStartTime
-      const glitchProgress = Math.min(elapsed / glitchDuration, 1.0)
+      const timeProgress = Math.min(elapsed / glitchDuration, 1.0)
 
+      // テクスチャ進行度: 直線（0→1）
+      mesh.material.uniforms.u_texture_progress.value = timeProgress
+
+      // グリッチ進行度: 山なりカーブ（0→1→0）
+      const glitchProgress = Math.sin(Math.PI * timeProgress)
       mesh.material.uniforms.u_glitch_progress.value = glitchProgress
 
-      if (glitchProgress >= 1.0) {
-        // グリッチ完了 → フェードアウト開始
-        currentPhase = PHASES.PHASE_FADEOUT
-        fadeoutStartTime = mesh.material.uniforms.u_time.value
-        console.log('Glitch completed → Starting fadeout')
-      }
-    }
-
-    // フェードアウト処理
-    if (currentPhase === PHASES.PHASE_FADEOUT) {
-      const elapsed = mesh.material.uniforms.u_time.value - fadeoutStartTime
-      const fadeoutProgress = Math.min(elapsed / glitchDuration, 1.0)
-
-      // 1.0から0.0へフェードアウト
-      mesh.material.uniforms.u_glitch_progress.value = 1.0 - fadeoutProgress
-
-      if (fadeoutProgress >= 1.0) {
-        // フェードアウト完了
+      if (timeProgress >= 1.0) {
+        // グリッチアニメーション完了
         isGlitchActive = false
-        currentPhase = PHASES.PHASE_2
-        mesh.material.uniforms.u_glitch_progress.value = 0.0
-        console.log('Fadeout completed → Image 2')
+        mesh.material.uniforms.u_texture_progress.value = 1.0 // 完全に02
+        mesh.material.uniforms.u_glitch_progress.value = 0.0 // グリッチなし
+        console.log('Glitch animation completed → Image 2')
 
         // 完了コールバックを呼び出し
         if (onEffectCompleted) {
@@ -262,15 +208,12 @@ export const imageChangerNoise: ImageChangerNoise = (
         }
       }
     }
-
-    // uniformに状態を送信
-    mesh.material.uniforms.u_phase.value = currentPhase
   }
 
   return {
     update,
     mesh,
-    currentPhase,
+    currentPhase: 1.0, // 常にグリッチフェーズ（互換性のため）
     triggerGlitch,
     updateShaderParams,
     resetGlitch,

@@ -2,7 +2,7 @@
 
 import { GlitchPanel } from './GlitchPanel'
 import { Select, Panel, Button, RangeSlider, Toggle } from './common'
-import { TestorPanelProps, EffectType, GlitchSettings, ProgressMode } from './types'
+import { TestorPanelProps, EffectType, GlitchSettings } from './types'
 import { useState } from 'react'
 import { useGlitchControl } from './hooks/useGlitchControl'
 import { useWebGL } from './context/WebGLContext'
@@ -58,7 +58,7 @@ export const TestorPanel = ({
     setSettings(prev => {
       const newSettings = { ...prev, progressValue: value }
       if (setManualProgress) {
-        setManualProgress(value, newSettings.progressMode)
+        setManualProgress(value)
       }
 
       return newSettings
@@ -73,17 +73,6 @@ export const TestorPanel = ({
     }
   }
 
-  const handleProgressModeChange = (newMode: ProgressMode) => {
-    setSettings(prev => {
-      const newSettings = { ...prev, progressMode: newMode }
-      // 現在の進行度を新しいモードで再適用
-      if (setManualProgress && prev.manualProgress) {
-        setManualProgress(prev.progressValue, newMode)
-      }
-
-      return newSettings
-    })
-  }
 
   // const handleGlitchTrigger = (settings: GlitchSettings) => {
   //   console.log('Glitch triggered with settings:', settings)
@@ -162,15 +151,7 @@ export const TestorPanel = ({
             />
             {settings.manualProgress && (
               <div className={styles.progressControlSection}>
-                <Select
-                  label='Progress Mode'
-                  value={settings.progressMode}
-                  onChange={(value) => handleProgressModeChange(value as ProgressMode)}
-                  options={[
-                    { value: 'roundtrip', label: 'Roundtrip' },
-                    { value: 'oneway', label: 'Oneway' }
-                  ]}
-                />
+                {/* Progress Mode選択は削除（Oneway固定） */}
                 <div className={styles.rangeSliderSection}>
                   <RangeSlider
                     label='Glitch Progress'
@@ -179,10 +160,7 @@ export const TestorPanel = ({
                     min={0}
                     max={1}
                     step={0.01}
-                    description={settings.progressMode === 'oneway'
-                      ? '0.0 = 初期状態, 1.0 = グリッチ最大'
-                      : '0.0 = 初期状態, 0.5 = グリッチ最大, 1.0 = 完了状態'
-                    }
+                    description='0.0 = 完全に01, 1.0 = 完全に02'
                   />
                 </div>
               </div>
@@ -190,8 +168,7 @@ export const TestorPanel = ({
             <p className={styles.explanationText}>
               <strong>操作説明:</strong><br />
               • Manual Progress Controlを有効にするとスライダーで演出進行度を手動制御<br />
-              • Oneway: 進行度がそのままglitch_progressに対応（片道）<br />
-              • Roundtrip: 自動演出と同じ進行（往復: 0→0.5でグリッチ増加、0.5→1.0でフェードアウト）<br />
+              • 進行度がそのままglitch_progressに対応（0.0=完全に01, 1.0=完全に02）<br />
               • 「演出開始」ボタンは自動モードで通常の演出を実行
             </p>
           </div>

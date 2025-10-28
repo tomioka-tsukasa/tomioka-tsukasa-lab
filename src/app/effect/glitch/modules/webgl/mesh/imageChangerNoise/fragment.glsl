@@ -3,7 +3,7 @@ varying vec2 vPosition;
 uniform float u_time;
 uniform sampler2D u_texture_01;
 uniform sampler2D u_texture_02;
-uniform float u_phase;
+uniform float u_texture_progress;
 uniform float u_glitch_progress;
 
 #include "@/lib/shader/random/random.glsl"
@@ -51,20 +51,18 @@ void main() {
   vec3 tex01 = effected_tex(u_texture_01, vUv, u_time);
   vec3 tex02 = effected_tex(u_texture_02, vUv, u_time);
 
-  // 状態に応じた処理
-  vec3 result = tex01; // デフォルトは画像1
+  // ベースとなるテクスチャミックス（直線進行: 0→1）
+  vec3 baseResult = mix(tex01, tex02, u_texture_progress);
 
-  if (u_phase == 1.0) {
-    // グリッチフェーズ: u_glitch_progressを使用
-    float randomNoise = random(vUv.y * 100.);
-    float effectMask = step(randomNoise, u_glitch_progress);
+  // グリッチ効果（JavaScript側で計算された山なりカーブを使用）
+  float randomNoise = random(vUv.y * 100.);
+  float effectMask = step(randomNoise, u_glitch_progress);
 
-    result = mix(tex01, tex02, effectMask);
-    // result = tex01;
-  } else if (u_phase >= 2.0) {
-    // 完了: 画像2固定
-    result = tex02;
-  }
+  // グリッチ結果: ランダムにtex02を混ぜる
+  vec3 glitchResult = mix(tex01, tex02, effectMask);
+
+  // 最終結果: グリッチ強度に応じてベースとグリッチをミックス
+  vec3 result = mix(baseResult, glitchResult, u_glitch_progress);
 
   gl_FragColor = vec4(result, 1.0);
 }

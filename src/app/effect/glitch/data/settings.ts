@@ -3,7 +3,7 @@ import { GlitchSettings } from '@/components/TestorPanel/types'
 export const defaultGlitchSettings: GlitchSettings = {
   ampliHeight: 1.6,
   glitchIntensity: 2.0,
-  duration: 0.24,
+  duration: 0.6,
   texture1Path: '/assets/images/samples/effect-glitch-sample-01.jpg',
   texture2Path: '/assets/images/samples/effect-glitch-sample-02.jpg',
   high: 6.0,
@@ -13,7 +13,7 @@ export const defaultGlitchSettings: GlitchSettings = {
   basisYAxis: 0.0,
   manualProgress: true,
   progressValue: 0.0,
-  progressMode: 'roundtrip'
+  progressMode: 'oneway'
 }
 
 export interface SliderItem {
