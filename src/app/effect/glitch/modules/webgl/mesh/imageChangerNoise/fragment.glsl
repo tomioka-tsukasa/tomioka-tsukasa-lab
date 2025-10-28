@@ -54,15 +54,15 @@ void main() {
   // ベースとなるテクスチャミックス（直線進行: 0→1）
   vec3 baseResult = mix(tex01, tex02, u_texture_progress);
 
-  // グリッチ効果（JavaScript側で計算された山なりカーブを使用）
+  // グリッチ効果（u_texture_progressを使用）
   float randomNoise = random(vUv.y * 100.);
-  float effectMask = step(randomNoise, u_glitch_progress);
+  float effectMask = step(randomNoise, u_texture_progress);
 
   // グリッチ結果: ランダムにtex02を混ぜる
   vec3 glitchResult = mix(tex01, tex02, effectMask);
 
   // 最終結果: グリッチ強度に応じてベースとグリッチをミックス
-  vec3 result = mix(baseResult, glitchResult, u_glitch_progress);
+  vec3 result = mix(baseResult, glitchResult, u_texture_progress);
 
   gl_FragColor = vec4(result, 1.0);
 }

@@ -31,22 +31,6 @@ const HomePageContent = () => {
     checkWebGL()
   }, [setImageChangerNoiseCtrl])
 
-  /**
-   * 初期テクスチャ設定（WebGL初期化時のみ）
-   */
-  useEffect(() => {
-    if (!imageChangerNoiseCtrl) return
-
-    // 初期状態: sample-01表示、次回sample-02に備える
-    const currentSlide = sliderData[0] // 最初のスライド
-    const nextSlideIndex = 1 % sliderData.length
-    const nextSlide = sliderData[nextSlideIndex]
-
-    if (currentSlide && nextSlide) {
-      imageChangerNoiseCtrl.setTextures(currentSlide.imagePath, nextSlide.imagePath)
-      console.log(`Initial texture setup: ${currentSlide.imagePath} -> ${nextSlide.imagePath}`)
-    }
-  }, [imageChangerNoiseCtrl])
 
   /**
    * グリッチエフェクト完了コールバック
@@ -86,6 +70,9 @@ const HomePageContent = () => {
       animationRef.current.kill()
     }
 
+    // 自動更新を確実に停止
+    imageChangerNoiseCtrl.resetGlitch()
+
     // テクスチャ設定
     const currentTextureKey = currentSlide.imagePath
     const targetTextureKey = targetSlide.imagePath
@@ -109,12 +96,12 @@ const HomePageContent = () => {
         // グリッチ進行度: カスタムイージング（山なり）
         const glitchEased = gsap.parseEase(CustomEase.create('custom', 'M0,0 C0.37,0.92 0.626,0.995 0.7,0.952 0.806,0.889 0.92,0.432 1,0'))(target.glitchProgress)
 
+        // Fragment Shader: textureEased, Vertex Shader: glitchEased
         imageChangerNoiseCtrl.setManualProgress?.(textureEased, glitchEased)
       },
       onComplete: () => {
         // 最終状態を確実に設定
         imageChangerNoiseCtrl.setManualProgress?.(1.0, 0.0)
-        console.log('GSAP animation completed → Image 2')
         animationRef.current = null
       }
     })

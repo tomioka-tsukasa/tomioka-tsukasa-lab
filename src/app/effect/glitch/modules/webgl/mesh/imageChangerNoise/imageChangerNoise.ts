@@ -162,14 +162,12 @@ export const imageChangerNoise: ImageChangerNoise = (
   const setManualProgress: SetManualProgress = (textureProgress: number, glitchProgress?: number) => {
     isManualMode = true
 
-    // テクスチャ進行度: 0.0→1.0
-    const clampedTextureProgress = Math.max(0, Math.min(1, textureProgress))
-    mesh.material.uniforms.u_texture_progress.value = clampedTextureProgress
+    // テクスチャ進行度
+    mesh.material.uniforms.u_texture_progress.value = textureProgress
 
-    // グリッチ進行度: 指定された場合はその値、未指定の場合はテクスチャ進行度と同じ
+    // グリッチ進行度
     const finalGlitchProgress = glitchProgress !== undefined ? glitchProgress : textureProgress
-    const clampedGlitchProgress = Math.max(0, Math.min(1, finalGlitchProgress))
-    mesh.material.uniforms.u_glitch_progress.value = clampedGlitchProgress
+    mesh.material.uniforms.u_glitch_progress.value = finalGlitchProgress
   }
 
   /**
