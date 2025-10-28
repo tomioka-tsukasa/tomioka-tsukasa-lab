@@ -31,15 +31,21 @@ const HomePageContent = () => {
   }, [setImageChangerNoiseCtrl])
 
   /**
-   * 初期テクスチャ設定
+   * 初期テクスチャ設定（WebGL初期化時のみ）
    */
   useEffect(() => {
-    if (!imageChangerNoiseCtrl || !sliderData[currentSlideIndex]) return
+    if (!imageChangerNoiseCtrl) return
 
-    const currentSlide = sliderData[currentSlideIndex]
-    const textureKey = currentSlide.imagePath
-    imageChangerNoiseCtrl.setTextures(textureKey, textureKey)
-  }, [imageChangerNoiseCtrl, currentSlideIndex])
+    // 初期状態: sample-01表示、次回sample-02に備える
+    const currentSlide = sliderData[0] // 最初のスライド
+    const nextSlideIndex = 1 % sliderData.length
+    const nextSlide = sliderData[nextSlideIndex]
+
+    if (currentSlide && nextSlide) {
+      imageChangerNoiseCtrl.setTextures(currentSlide.imagePath, nextSlide.imagePath)
+      console.log(`Initial texture setup: ${currentSlide.imagePath} -> ${nextSlide.imagePath}`)
+    }
+  }, [imageChangerNoiseCtrl])
 
   /**
    * グリッチエフェクト完了コールバック
@@ -48,8 +54,20 @@ const HomePageContent = () => {
     console.log('Glitch effect completed! (PHASE_2 reached) - Precise callback')
 
     resetGlitch()
-    // テクスチャ切り替えは navigation 処理に移譲
-  }, [resetGlitch])
+
+    // 次回切り替え用のテクスチャ準備
+    if (imageChangerNoiseCtrl) {
+      const currentSlide = sliderData[currentSlideIndex]
+      const nextSlideIndex = (currentSlideIndex + 1) % sliderData.length
+      const nextSlide = sliderData[nextSlideIndex]
+
+      if (currentSlide && nextSlide) {
+        // 現在表示中のテクスチャと次に切り替える予定のテクスチャを設定
+        imageChangerNoiseCtrl.setTextures(currentSlide.imagePath, nextSlide.imagePath)
+        console.log(`Next texture prepared: ${currentSlide.imagePath} -> ${nextSlide.imagePath}`)
+      }
+    }
+  }, [resetGlitch, imageChangerNoiseCtrl, currentSlideIndex])
 
   /**
    * グリッチエフェクト完了コールバックを設定
@@ -81,6 +99,7 @@ const HomePageContent = () => {
     const currentTextureKey = currentSlide.imagePath
     const targetTextureKey = targetSlide.imagePath
 
+    // 現在のテクスチャから次のテクスチャへの切り替え設定
     imageChangerNoiseCtrl.setTextures(currentTextureKey, targetTextureKey)
 
     // グリッチエフェクト開始

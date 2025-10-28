@@ -30,12 +30,6 @@ export const useGlitchControl = () => {
         basisYAxis: settings.basisYAxis
       })
 
-      // テクスチャ更新は将来実装
-      console.log('Texture paths:', {
-        texture1: settings.texture1Path,
-        texture2: settings.texture2Path
-      })
-
       // グリッチを発動
       contextTriggerGlitch(settings.duration)
     } else {
