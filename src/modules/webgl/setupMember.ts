@@ -119,8 +119,6 @@ export const webglCtrl: WebGLCtrl = {
   envmaps: null,
   textures: null,
   controls: null,
-  car: null,
-  world: null,
 }
 
 /**

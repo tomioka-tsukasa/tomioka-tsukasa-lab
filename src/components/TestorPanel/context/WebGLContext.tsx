@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useContext, useState, useCallback, ReactNode } from 'react'
-import { ImageChangerNoiseCtrl } from '@/modules/webgl/webglTypes'
+import { ImageChangerNoiseCtrl } from '@/app/effect/glitch/modules/webgl/webglTypes'
 
 interface WebGLContextType {
   imageChangerNoiseCtrl: ImageChangerNoiseCtrl | null

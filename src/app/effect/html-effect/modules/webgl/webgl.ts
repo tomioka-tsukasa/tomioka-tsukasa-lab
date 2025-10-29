@@ -3,7 +3,7 @@ import * as THREE from 'three'
 // セットアップ
 import { getCamera, getControls, getRenderer, getCameraInfo } from '@/modules/webgl/setup/setup'
 import { loadingAssets, setupMember, webglCtrl } from './setupMember'
-import { CreateWebGL, InitWebGL } from '@/modules/webgl/webglTypes'
+import { CreateWebGL, InitWebGL } from './webglTypes'
 
 // ポストプロセッシング
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'

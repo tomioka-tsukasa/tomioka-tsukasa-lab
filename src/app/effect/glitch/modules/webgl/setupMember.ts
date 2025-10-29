@@ -2,7 +2,7 @@ import { cameraWork } from './cameraWork'
 import { LoadingObject, LoadingObjects } from '@/modules/webgl/loading/loadingManagerTypes'
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DataTexture, Texture } from 'three'
-import { WebGLCtrl } from '@/modules/webgl/webglTypes'
+import { WebGLCtrl } from './webglTypes'
 import { GetSpotLight } from '@/modules/webgl/setup/lights/lightsTypes'
 
 /**
@@ -126,8 +126,6 @@ export const webglCtrl: WebGLCtrl = {
   envmaps: null,
   textures: null,
   controls: null,
-  car: null,
-  world: null,
 }
 
 /**
